@@ -4,7 +4,7 @@ import ErrorCom from "../Components/ErrorCom/ErrorCom";
 import Home from "../Pages/Home/Home";
 import Login from "../Pages/Login/Login";
 import Registration from "../Pages/Registration/Registration";
-import Header from "../Components/Header/Header";
+
 
 // all router her
 const router = createBrowserRouter([
