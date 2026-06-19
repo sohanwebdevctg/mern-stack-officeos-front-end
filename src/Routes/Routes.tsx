@@ -1,10 +1,12 @@
 import { createBrowserRouter } from "react-router";
 import MainLayout from "../MainLayout/MainLayout";
+import ErrorCom from "../Components/ErrorCom/ErrorCom";
 
 // all router her
 const router = createBrowserRouter([
   { path: "/", 
     element: <MainLayout></MainLayout>,
+    errorElement: <ErrorCom></ErrorCom>,
     children: [
     { 
       index: true, 
@@ -12,7 +14,7 @@ const router = createBrowserRouter([
     },
     { 
       path: '/about', 
-      element: <h2>this is about</h2> 
+      element: <h1>about</h1>
     }
     ]
   },
