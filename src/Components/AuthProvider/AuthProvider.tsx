@@ -16,6 +16,7 @@ interface AuthProviderProps {
   children: ReactNode;
 }
 
+
 const AuthProvider = ({ children }: AuthProviderProps) => {
 
   // state is set with user data from local storage
