@@ -48,7 +48,7 @@ const Register = () => {
               <div className="flex-1 p-5">
                 <div className="form-control sm:text-center">
                   <h3 className="text-xl sm:text-2xl text-red-500 font-bold mb-4">
-                    Create New Account
+                    Registration
                   </h3>
                 </div>
 
