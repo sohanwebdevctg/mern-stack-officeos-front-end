@@ -1,29 +1,25 @@
-interface UserProfile{
-  id?: string,
-  name: string,
-  email: string,
-  image?: string,
-  roleName: "admin" | "user" | "manager",
-  isActive: boolean
-};
+export interface UserProfile {
+  id: string;
+  name: string;
+  email: string;
+  image?: string;
+  roleName: "admin" | "user" | "manager";
+  isActive: boolean;
+}
 
-interface LoginResponse{
-  success: boolean,
-  message: string,
-  token: string,
-  user: UserProfile
-};
+export interface LoginResponse {
+  success: boolean;
+  message: string;
+  token: string;
+  user: UserProfile;
+}
 
 
 /* user data start */
 
 // get user data
 const getUser = (): LoginResponse | null => {
-
-  // get localstorage data
   const userInfo = localStorage.getItem("userInfo");
-
-  // set data
   if (userInfo) {
     try {
       return JSON.parse(userInfo) as LoginResponse;
@@ -33,8 +29,7 @@ const getUser = (): LoginResponse | null => {
     }
   }
   return null;
-
-}
+};
 
 // set user data
 const setUser = (data: LoginResponse): void => {

@@ -1,8 +1,9 @@
-import { useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import { GiHamburgerMenu } from "react-icons/gi";
 import { IoClose } from "react-icons/io5";
 import { Link, NavLink } from "react-router";
 import Swal from "sweetalert2";
+import { AuthContext } from "../AuthProvider/AuthProvider";
 
 // ⏳ ভবিষ্যতে যখন localstorage ফাইল রেডি হবে, তখন এই নিচের লাইনটি আন-কমেন্ট করে নেবেন:
 // import { getUser, removeUser } from "../../utilities/localstorage";
@@ -10,6 +11,9 @@ import Swal from "sweetalert2";
 const Header = () => {
   const [toggle, setToggle] = useState<boolean>(false);
   const [active, setActive] = useState<boolean>(false);
+
+  const authInfo = useContext(AuthContext);
+  console.log(authInfo);
 
   
   const [validUser] = useState<{ userType: string } | null>({ userType: "admin" });
