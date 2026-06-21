@@ -1,13 +1,12 @@
-import { useState } from "react";
-import { FaEdit, FaUserCircle, FaUsers, FaUserShield, FaWpforms } from "react-icons/fa";
+import { useContext } from "react";
+import {  FaUserCircle } from "react-icons/fa";
 import { GiHamburgerMenu } from "react-icons/gi";
 import { IoClose, IoLogOut } from "react-icons/io5";
 import { MdDashboard, MdNotificationAdd } from "react-icons/md";
-import { NavLink } from "react-router"; 
+import { NavLink, useNavigate } from "react-router"; 
 import Swal from "sweetalert2";
+import { AuthContext } from "../AuthProvider/AuthProvider";
 
-
-// import { getUser, removeUser } from "../../utilities/localstorage";
 
 // add props typescript
 interface NavbarProps {
@@ -17,26 +16,43 @@ interface NavbarProps {
 
 const Sidebar = ({ active, toggleSideBar }: NavbarProps) => {
 
-  const [validUser] = useState<{ userType: string } | null>({ userType: "admin" });
+  const authInfo = useContext(AuthContext);
 
+  // navigation the user
+  const navigate = useNavigate();
 
-  // const [validUser, setValidUser] = useState(() => getUser());
+  if (!authInfo) return null;
+
+  const {validUser, logOut} = authInfo;
+  const user = validUser?.user;
 
   // logout function
-  const logOutFun = () => {
-    // removeUser();
-    
+  const handleLogOut = () => {
     Swal.fire({
-      position: "center",
-      icon: "success",
-      title: "You are now Logged out",
-      showConfirmButton: false,
-      timer: 1000,
+      title: "Are you sure?",
+      text: "You will be logged out of your session!",
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonColor: "#EF4444",
+      cancelButtonColor: "#3B82F6",
+      confirmButtonText: "Yes, Logout!",
+    }).then((result) => {
+      if (result.isConfirmed) {
+        logOut();
+
+        Swal.fire({
+          position: "center",
+          icon: "success",
+          title: "You are now Logged out",
+          showConfirmButton: false,
+          timer: 1500,
+        });
+
+        setTimeout(() => {
+          navigate("/login");
+        }, 1500);
+      }
     });
-    
-    setTimeout(() => {
-      window.location.reload();
-    }, 1000);
   };
 
   return (
@@ -67,56 +83,12 @@ const Sidebar = ({ active, toggleSideBar }: NavbarProps) => {
           </li>
 
           {/* UserOrder Link - Admin Only */}
-          {validUser?.userType === "admin" && (
+          {user?.roleName === "admin" && (
             <li>
               {active ? (
                 <NavLink className={({ isActive }) => isActive ? "sm:text-[8px] md:text-[10px] lg:text-xs xl:text-sm 2xl:text-sm font-bold text-red-500" : "sm:text-[8px] md:text-[10px] lg:text-xs xl:text-sm 2xl:text-sm text-white"} to="/user-order-table">UserOrder</NavLink>
               ) : (
                 <NavLink className={({ isActive }) => isActive ? "text-red-500" : "text-white"} to="/user-order-table"><MdNotificationAdd className="text-xl xl:text-3xl mx-auto" /></NavLink>
-              )}
-            </li>
-          )}
-
-          {/* AllUsers Link - Admin Only */}
-          {validUser?.userType === "admin" && (
-            <li>
-              {active ? (
-                <NavLink className={({ isActive }) => isActive ? "sm:text-[8px] md:text-[10px] lg:text-xs xl:text-sm 2xl:text-sm font-bold text-red-500" : "sm:text-[8px] md:text-[10px] lg:text-xs xl:text-sm 2xl:text-sm text-white"} to="/all-users">AllUsers</NavLink>
-              ) : (
-                <NavLink className={({ isActive }) => isActive ? "text-red-500" : "text-white"} to="/all-users"><FaUsers className="text-xl xl:text-3xl mx-auto" /></NavLink>
-              )}
-            </li>
-          )}
-
-          {/* Order Link - Regular User Only */}
-          {validUser?.userType === "user" && (
-            <li>
-              {active ? (
-                <NavLink className={({ isActive }) => isActive ? "sm:text-[8px] md:text-[10px] lg:text-xs xl:text-sm 2xl:text-sm font-bold text-red-500" : "sm:text-[8px] md:text-[10px] lg:text-xs xl:text-sm 2xl:text-sm text-white"} to="/order-table">Order</NavLink>
-              ) : (
-                <NavLink className={({ isActive }) => isActive ? "text-red-500" : "text-white"} to="/order-table"><FaEdit className="text-xl xl:text-3xl mx-auto" /></NavLink>
-              )}
-            </li>
-          )}
-
-          {/* CreateUsers Link - Admin Only */}
-          {validUser?.userType === "admin" && (
-            <li>
-              {active ? (
-                <NavLink className={({ isActive }) => isActive ? "sm:text-[8px] md:text-[10px] lg:text-xs xl:text-sm 2xl:text-sm font-bold text-red-500" : "sm:text-[8px] md:text-[10px] lg:text-xs xl:text-sm 2xl:text-sm text-white"} to="/create-users">CreateUsers</NavLink>
-              ) : (
-                <NavLink className={({ isActive }) => isActive ? "text-red-500" : "text-white"} to="/create-users"><FaUserShield className="text-xl xl:text-3xl mx-auto" /></NavLink>
-              )}
-            </li>
-          )}
-
-          {/* CreateProduct Link - Admin Only */}
-          {validUser?.userType === "admin" && (
-            <li>
-              {active ? (
-                <NavLink className={({ isActive }) => isActive ? "sm:text-[8px] md:text-[10px] lg:text-xs xl:text-sm 2xl:text-sm font-bold text-red-500" : "sm:text-[8px] md:text-[10px] lg:text-xs xl:text-sm 2xl:text-sm text-white"} to="/create-product">CreateProduct</NavLink>
-              ) : (
-                <NavLink className={({ isActive }) => isActive ? "text-red-500" : "text-white"} to="/create-product"><FaWpforms className="text-xl xl:text-3xl mx-auto" /></NavLink>
               )}
             </li>
           )}
@@ -132,7 +104,7 @@ const Sidebar = ({ active, toggleSideBar }: NavbarProps) => {
         </ul>
 
         {/* LogOut Button */}
-        <div onClick={logOutFun} className="cursor-pointer">
+        <div onClick={handleLogOut} className="cursor-pointer">
           {active ? (
             <button className="sm:text-[8px] md:text-[10px] lg:text-xs xl:text-sm 2xl:text-sm font-bold text-red-500">LogOut</button>
           ) : (

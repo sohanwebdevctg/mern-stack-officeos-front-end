@@ -1,44 +1,16 @@
 import { useContext, useEffect, useState } from "react";
 import { GiHamburgerMenu } from "react-icons/gi";
 import { IoClose } from "react-icons/io5";
-import { Link, NavLink } from "react-router";
+import { Link, NavLink, useNavigate } from "react-router";
 import Swal from "sweetalert2";
 import { AuthContext } from "../AuthProvider/AuthProvider";
 
-// ⏳ ভবিষ্যতে যখন localstorage ফাইল রেডি হবে, তখন এই নিচের লাইনটি আন-কমেন্ট করে নেবেন:
-// import { getUser, removeUser } from "../../utilities/localstorage";
 
 const Header = () => {
   const [toggle, setToggle] = useState<boolean>(false);
   const [active, setActive] = useState<boolean>(false);
 
-  const authInfo = useContext(AuthContext);
-  console.log(authInfo);
-
-  
-  const [validUser] = useState<{ userType: string } | null>({ userType: "admin" });
-
-
-  // const [validUser, setValidUser] = useState(() => getUser());
-
-  // logout function
-  const logOutFun = () => {
-    
-    // removeUser();
-    
-    Swal.fire({
-      position: "center",
-      icon: "success",
-      title: "You are now Logged out",
-      showConfirmButton: false,
-      timer: 1000,
-    });
-    setTimeout(() => {
-      window.location.reload();
-    }, 1000);
-  };
-
-  // handle the mobile bar scroller
+    // handle the mobile bar scroller
   useEffect(() => {
     const handleScroll = () => {
       if (window.scrollY > 0) {
@@ -53,17 +25,63 @@ const Header = () => {
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
 
+  const authInfo = useContext(AuthContext);
+  // navigation the user
+  const navigate = useNavigate();
+
+  if (!authInfo) return null;
+
+  const {validUser, logOut} = authInfo;
+  const user = validUser?.user;
+
+
+
+
+  // logout function
+  // logout function
+  const handleLogOut = () => {
+    Swal.fire({
+      title: "Are you sure?",
+      text: "You will be logged out of your session!",
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonColor: "#EF4444",
+      cancelButtonColor: "#3B82F6",
+      confirmButtonText: "Yes, Logout!",
+    }).then((result) => {
+      if (result.isConfirmed) {
+        logOut();
+
+        Swal.fire({
+          position: "center",
+          icon: "success",
+          title: "You are now Logged out",
+          showConfirmButton: false,
+          timer: 1500,
+        });
+
+        setTimeout(() => {
+          navigate("/login");
+        }, 1500);
+      }
+    });
+  };
+
+
+
   return (
     <>
       {/* Content section start */}
       <div className={`${active ? "fixed top-0 right-0 left-0 z-50 sm:sticky" : "sticky top-0 z-50"}`}>
         <div className="w-full h-14 bg-red-500 shadow-md flex justify-between items-center px-3 xl:px-5">
+          {/* title section start */}
           <div>
-            <h2 className="text-lg xl:text-xl text-white font-bold italic tracking-wide">OfficeOS (ERP)</h2>
+            <h2 className="text-sm sm:text-md md:text-lg lg:text-xl xl:text-xl text-white font-bold italic tracking-wide">OfficeOS (ERP)</h2>
           </div>
-          
+          {/* title section end */}
+          {/* toggle button and profile link start */}
           <div className="flex justify-center items-center gap-4">
-            <div className="md:hidden flex items-center">
+            <div className="sm:hidden flex items-center">
               {toggle ? (
                 <IoClose onClick={() => setToggle(!toggle)} className="text-white text-2xl cursor-pointer" />
               ) : (
@@ -76,11 +94,13 @@ const Header = () => {
               <div className="w-8 lg:w-9 rounded-full ring ring-white/50 ring-offset-base-100 ring-offset-2 overflow-hidden">
                 <img 
                   alt="User Profile"
-                  src="https://cdn.pixabay.com/photo/2020/07/01/12/58/icon-5359553_640.png" 
+                  // src="https://cdn.pixabay.com/photo/2020/07/01/12/58/icon-5359553_640.png" 
+                  src={user?.image}
                 />
               </div>
             </Link>
           </div>
+          {/* toggle button and profile link end */}
         </div>
       </div>
       {/* Content section end */}
@@ -88,7 +108,7 @@ const Header = () => {
       {/* Mobile drawer content section start */}
       <div 
         className={`${
-          toggle ? "top-14 bottom-0 right-0 left-0" : "top-14 -left-full right-full bottom-0"
+          toggle ? "top-14 bottom-0 right-36 sm:right-60 left-0" : "top-14 -left-full right-full bottom-0"
         } fixed transition-all duration-300 ease-in-out bg-base-900/95 z-50 md:hidden backdrop-blur-sm`}
         style={{ backgroundColor: 'rgba(0, 0, 0, 0.95)' }}
       >
@@ -104,7 +124,7 @@ const Header = () => {
             </NavLink>
           </li>
           
-          {validUser?.userType === "admin" && (
+          {user?.roleName === "admin" && (
             <li onClick={() => setToggle(!toggle)}>
               <NavLink
                 className={({ isActive }) =>
@@ -116,59 +136,6 @@ const Header = () => {
               </NavLink>
             </li>
           )}
-
-          {validUser?.userType === "admin" && (
-            <li onClick={() => setToggle(!toggle)}>
-              <NavLink
-                className={({ isActive }) =>
-                  isActive ? "text-base font-bold text-red-500" : "text-base text-white hover:text-red-400 transition"
-                }
-                to="/all-users"
-              >
-                AllUsers
-              </NavLink>
-            </li>
-          )}
-
-          {validUser?.userType === "user" && (
-            <li onClick={() => setToggle(!toggle)}>
-              <NavLink
-                className={({ isActive }) =>
-                  isActive ? "text-base font-bold text-red-500" : "text-base text-white hover:text-red-400 transition"
-                }
-                to="/order-table"
-              >
-                Order
-              </NavLink>
-            </li>
-          )}
-
-          {validUser?.userType === "admin" && (
-            <li onClick={() => setToggle(!toggle)}>
-              <NavLink
-                className={({ isActive }) =>
-                  isActive ? "text-base font-bold text-red-500" : "text-base text-white hover:text-red-400 transition"
-                }
-                to="/create-users"
-              >
-                CreateUsers
-              </NavLink>
-            </li>
-          )}
-
-          {validUser?.userType === "admin" && (
-            <li onClick={() => setToggle(!toggle)}>
-              <NavLink
-                className={({ isActive }) =>
-                  isActive ? "text-base font-bold text-red-500" : "text-base text-white hover:text-red-400 transition"
-                }
-                to="/create-product"
-              >
-                CreateProduct
-              </NavLink>
-            </li>
-          )}
-
           <li onClick={() => setToggle(!toggle)}>
             <NavLink
               className={({ isActive }) =>
@@ -180,7 +147,7 @@ const Header = () => {
             </NavLink>
           </li>
 
-          <li onClick={() => { setToggle(!toggle); logOutFun(); }}>
+          <li onClick={() => { setToggle(!toggle); handleLogOut(); }}>
             <button className="text-base font-bold text-red-500 hover:text-red-400 cursor-pointer transition">
               LogOut
             </button>

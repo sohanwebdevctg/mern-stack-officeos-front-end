@@ -1,5 +1,5 @@
 import { createContext, useState, type ReactNode, type Dispatch,type SetStateAction} from "react";
-import { getUser, type LoginResponse } from "../../utilities/localstorage";
+import { getUser, removeUser, type LoginResponse } from "../../utilities/localstorage";
 
 // The type of data that will be contained within the context is set
 interface AuthContextType {
@@ -7,6 +7,7 @@ interface AuthContextType {
   setValidUser: Dispatch<SetStateAction<LoginResponse | null>>;
   loading: boolean;
   setLoading: Dispatch<SetStateAction<boolean>>;
+  logOut: () => void;
   apiEndPoints:{
     registration: string;
     login: string;
@@ -29,6 +30,11 @@ const AuthProvider = ({ children }: AuthProviderProps) => {
   // set loading state
   const [loading, setLoading] = useState<boolean>(true);
 
+  const logOut = () => {
+    removeUser();
+    setValidUser(null); 
+  };
+
   // api end point
   const apiEndPoints = {
     registration : "http://localhost:3002/api/v1/user/registration",
@@ -37,7 +43,7 @@ const AuthProvider = ({ children }: AuthProviderProps) => {
 
 
   // sharing the context value
-  const userInfo = {validUser, setValidUser, loading,setLoading, apiEndPoints};
+  const userInfo = {validUser, setValidUser, loading,setLoading, logOut, apiEndPoints};
 
   return (
     <AuthContext.Provider value={userInfo}>
