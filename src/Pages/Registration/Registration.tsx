@@ -1,14 +1,23 @@
 import { useNavigate, Link } from "react-router";
 import img from "../../../public/login/logImg.png";
+import axios, { AxiosError } from "axios";
+import Swal from "sweetalert2";
+import { useContext, useState } from "react";
+import { AuthContext } from "../../Components/AuthProvider/AuthProvider";
 
 const Register = () => {
+  const authInfo = useContext(AuthContext);
   const navigate = useNavigate();
-
+  const [loading, setLoading] = useState<boolean>(false);
   console.log(navigate);
 
+  
+
   // form submit handle
-  const registerFun = (event: React.FormEvent<HTMLFormElement>) => {
+  const registerFun = async (event: React.FormEvent<HTMLFormElement>): Promise<void> => {
     event.preventDefault();
+    if (!authInfo) return;
+
     const form = event.target as HTMLFormElement;
 
     // collect the form input data
@@ -18,6 +27,18 @@ const Register = () => {
     
     // image file input element
     const imageInput = form.elements.namedItem("image") as HTMLInputElement;
+
+    const passwordRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d).{6,}$/;
+
+    if (!passwordRegex.test(password)) {
+      Swal.fire({
+        title: "Weak Password!",
+        text: "Password must be at least 6 characters long, and include at least one uppercase letter, one lowercase letter, and one number!",
+        icon: "warning",
+      });
+      return;
+    }
+    setLoading(true);
     
     // Whether the file was actually selected by the user and the first file (`[0]`) was taken as an object
     const imageFile = imageInput.files ? imageInput.files[0] : null;
@@ -32,7 +53,35 @@ const Register = () => {
       formData.append("image", imageFile);
     }
 
-    
+    // registration api
+    try{
+      const response = await axios.post(authInfo?.apiEndPoints?.registration, formData, {
+        headers: {
+          "Content-Type": "multipart/form-data",
+        },
+      });
+      if (response.data) {
+        Swal.fire({
+          title: "Success!",
+          text: response.data.message || "Registration successful! Redirecting to login...",
+          icon: "success",
+          timer: 2000,
+          showConfirmButton: false,
+        });
+
+        // if use registration user navigate the login
+        navigate("/login");
+      }
+    }catch(error){
+      const axiosError = error as AxiosError<{ message: string }>;
+      Swal.fire({
+        title: "Registration Failed!",
+        text: axiosError.response?.data?.message || "Something went wrong. Please try again.",
+        icon: "error",
+      });
+    }finally {
+      setLoading(false); 
+    }
   };
 
   return (
@@ -87,8 +136,8 @@ const Register = () => {
                 
                 {/* Submit Button */}
                 <div className="form-control mt-6 w-full">
-                  <button type="submit" className="btn bg-red-500 hover:bg-red-600 text-white w-full font-bold">
-                    Register Account
+                  <button type="submit" disabled={loading} className="btn bg-red-500 hover:bg-red-600 text-white w-full font-bold">
+                    {loading ? "User Created..." : "Register Account"}
                   </button>
                 </div>
 

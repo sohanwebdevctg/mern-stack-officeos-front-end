@@ -7,6 +7,10 @@ interface AuthContextType {
   setValidUser: Dispatch<SetStateAction<LoginResponse | null>>;
   loading: boolean;
   setLoading: Dispatch<SetStateAction<boolean>>;
+  apiEndPoints:{
+    registration: string;
+    login: string;
+  }
 }
 
 // Initially, the value of the context may be null, so the type is set.
@@ -25,8 +29,15 @@ const AuthProvider = ({ children }: AuthProviderProps) => {
   // set loading state
   const [loading, setLoading] = useState<boolean>(true);
 
+  // api end point
+  const apiEndPoints = {
+    registration : "http://localhost:3002/api/v1/user/registration",
+    login : "http://localhost:3002/api/v1/user/login",
+  }
+
+
   // sharing the context value
-  const userInfo = {validUser, setValidUser, loading,setLoading};
+  const userInfo = {validUser, setValidUser, loading,setLoading, apiEndPoints};
 
   return (
     <AuthContext.Provider value={userInfo}>
