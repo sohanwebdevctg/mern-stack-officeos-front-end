@@ -9,7 +9,6 @@ const Register = () => {
   const authInfo = useContext(AuthContext);
   const navigate = useNavigate();
   const [loading, setLoading] = useState<boolean>(false);
-  console.log(navigate);
 
   
 

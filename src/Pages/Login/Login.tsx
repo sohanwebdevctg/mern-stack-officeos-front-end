@@ -1,14 +1,22 @@
 import { useNavigate, Link } from "react-router";
 import img from "../../../public/login/logImg.png";
+import { setUser } from "../../utilities/localstorage";
+import axios, { AxiosError } from "axios";
+import Swal from "sweetalert2";
+import { useContext, useState } from "react";
+import { AuthContext } from "../../Components/AuthProvider/AuthProvider";
 
 const Login = () => {
-  const navigate = useNavigate();
 
-  console.log(navigate);
+  const authInfo = useContext(AuthContext);
+  const navigate = useNavigate();
+  const [btnLoading, setBtnLoading] = useState<boolean>(false);
+
 
   // form submit handle
-  const logFun = (event: React.FormEvent<HTMLFormElement>) => {
+  const logFun = async (event: React.FormEvent<HTMLFormElement>): Promise<void> => {
     event.preventDefault();
+    if (!authInfo) return;
     const form = event.target as HTMLFormElement;
 
     // collect the form input data
@@ -20,7 +28,52 @@ const Login = () => {
 
     console.log("Login Data Collected:", loginData);
 
-    
+    try {
+      // 🚀 ১. গ্লোবাল এবং লোকাল লোডিং চালু হলো
+      authInfo.setLoading(true);
+      setBtnLoading(true);
+
+      // 📡 ২. লগইন এপিআই কল
+      const response = await axios.post(authInfo.apiEndPoints.login, loginData);
+
+      if (response.data) {
+        const userData = response.data.user; 
+
+        if (userData && userData.isActive === false) {
+          Swal.fire({
+            title: "Account Inactive!",
+            text: "Your account is currently disabled. Please contact the administrator.",
+            icon: "error",
+          });
+          
+          authInfo.setLoading(false);
+          setBtnLoading(false);
+          return;
+        }
+        setUser(response.data);
+        authInfo.setValidUser(response.data);
+
+        Swal.fire({
+          title: "Welcome Back!",
+          text: response.data.message || "Logged in successfully!",
+          icon: "success",
+          timer: 1500,
+          showConfirmButton: false,
+        });
+        navigate("/");
+      }
+
+    } catch (error: any) {
+      const axiosError = error as AxiosError<{ message: string }>;
+            Swal.fire({
+              title: "Login Failed!",
+              text: axiosError.response?.data?.message || "Invalid email or password. Please try again.",
+              icon: "error",
+            });
+    } finally {
+      authInfo.setLoading(false);
+      setBtnLoading(false);
+    }
   };
 
   return (
@@ -58,8 +111,8 @@ const Login = () => {
                 
                 {/* Submit Button */}
                 <div className="form-control mt-6 w-full">
-                  <button type="submit" className="btn bg-red-500 hover:bg-red-600 text-white w-full font-bold">
-                    Login Account
+                  <button type="submit" disabled={btnLoading} className="btn bg-red-500 hover:bg-red-600 text-white w-full font-bold">
+                    {btnLoading ? "Logging in..." : "Login Account"}
                   </button>
                 </div>
 
