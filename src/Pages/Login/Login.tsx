@@ -16,6 +16,7 @@ const Login = () => {
   // form submit handle
   const logFun = async (event: React.FormEvent<HTMLFormElement>): Promise<void> => {
     event.preventDefault();
+    // checking authInfo
     if (!authInfo) return;
     const form = event.target as HTMLFormElement;
 
@@ -63,7 +64,7 @@ const Login = () => {
         navigate("/");
       }
 
-    } catch (error: any) {
+    } catch (error) {
       const axiosError = error as AxiosError<{ message: string }>;
             Swal.fire({
               title: "Login Failed!",

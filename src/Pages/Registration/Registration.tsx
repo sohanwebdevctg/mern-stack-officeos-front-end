@@ -15,6 +15,7 @@ const Register = () => {
   // form submit handle
   const registerFun = async (event: React.FormEvent<HTMLFormElement>): Promise<void> => {
     event.preventDefault();
+    // checking authInfo
     if (!authInfo) return;
 
     const form = event.target as HTMLFormElement;

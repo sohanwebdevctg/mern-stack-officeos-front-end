@@ -3,7 +3,7 @@ export interface UserProfile {
   name: string;
   email: string;
   image?: string;
-  roleName: "admin" | "user" | "manager";
+  roleName: "admin" | "manager" | "employee";
   isActive: boolean;
 }
 

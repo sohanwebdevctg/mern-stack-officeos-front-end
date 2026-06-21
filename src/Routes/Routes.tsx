@@ -4,12 +4,13 @@ import ErrorCom from "../Components/ErrorCom/ErrorCom";
 import Home from "../Pages/Home/Home";
 import Login from "../Pages/Login/Login";
 import Registration from "../Pages/Registration/Registration";
+import PrivateRoute from "./PrivateRoute";
 
 
 // all router her
 const router = createBrowserRouter([
   { path: "/", 
-    element: <MainLayout></MainLayout>,
+    element: <PrivateRoute><MainLayout></MainLayout></PrivateRoute>,
     errorElement: <ErrorCom></ErrorCom>,
     children: [
     { 
