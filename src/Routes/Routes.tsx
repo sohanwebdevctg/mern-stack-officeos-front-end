@@ -6,6 +6,8 @@ import Login from "../Pages/Login/Login";
 import Registration from "../Pages/Registration/Registration";
 import PrivateRoute from "./PrivateRoute";
 import SingleUser from "../Pages/SingleUser/SingleUser";
+import AllUserAdmin from "../Pages/AllUserAdmin/AllUserAdmin";
+import AllUserManager from "../Pages/AllUserManager/AllUserManager";
 // import axios from "axios";
 
 
@@ -19,6 +21,14 @@ const router = createBrowserRouter([
     { 
       index: true, 
       element: <Home></Home>
+    },
+    {
+      path: '/allUserAdmin',
+      element: <AllUserAdmin></AllUserAdmin>
+    },
+    {
+      path: '/allUserManager',
+      element: <AllUserManager></AllUserManager>
     },
     { 
       path: '/singleUser/:id',
