@@ -92,12 +92,12 @@ const AllUsersAdmin = () => {
 
   return (
     <div className="container mx-auto p-5 my-5 bg-white shadow-md rounded-xl">
-      <h3 className="text-2xl font-bold text-gray-800 mb-5 border-b pb-2">Admin Panel - Manage Users ({users.length})</h3>
+      <h3 className="text-md sm:text-lg lg:text-2xl font-bold text-gray-800 mb-5 border-b pb-2">Admin Panel - Manage Users ({users.length})</h3>
       <div className="overflow-x-auto">
         <table className="table w-full border-collapse">
           <thead>
             <tr className="bg-gray-100 text-gray-700">
-              <th>Serial</th>
+              <th>#</th>
               <th>Image</th>
               <th>Name</th>
               <th>Email</th>

@@ -90,7 +90,7 @@ const Sidebar = ({ active, toggleSideBar }: NavbarProps) => {
               {active ? (
                 <NavLink className={({ isActive }) => isActive ? "sm:text-[8px] md:text-[10px] lg:text-xs xl:text-sm 2xl:text-sm font-bold text-red-500" : "sm:text-[8px] md:text-[10px] lg:text-xs xl:text-sm 2xl:text-sm text-white"} to="/allUserAdmin">AllUserAdmin</NavLink>
               ) : (
-                <NavLink className={({ isActive }) => isActive ? "text-red-500" : "text-white"} to="/user-order-table"><MdNotificationAdd className="text-xl xl:text-3xl mx-auto" /></NavLink>
+                <NavLink className={({ isActive }) => isActive ? "text-red-500" : "text-white"} to="/allUserAdmin"><MdNotificationAdd className="text-xl xl:text-3xl mx-auto" /></NavLink>
               )}
             </li>
           )}
@@ -100,7 +100,7 @@ const Sidebar = ({ active, toggleSideBar }: NavbarProps) => {
               {active ? (
                 <NavLink className={({ isActive }) => isActive ? "sm:text-[8px] md:text-[10px] lg:text-xs xl:text-sm 2xl:text-sm font-bold text-red-500" : "sm:text-[8px] md:text-[10px] lg:text-xs xl:text-sm 2xl:text-sm text-white"} to="/allUserManager">AllUserManager</NavLink>
               ) : (
-                <NavLink className={({ isActive }) => isActive ? "text-red-500" : "text-white"} to="/user-order-table"><MdNotificationAdd className="text-xl xl:text-3xl mx-auto" /></NavLink>
+                <NavLink className={({ isActive }) => isActive ? "text-red-500" : "text-white"} to="/allUserManager"><MdNotificationAdd className="text-xl xl:text-3xl mx-auto" /></NavLink>
               )}
             </li>
           )}
