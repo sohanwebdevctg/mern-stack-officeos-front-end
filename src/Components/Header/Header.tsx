@@ -35,9 +35,6 @@ const Header = () => {
   const user = validUser?.user;
 
 
-
-
-  // logout function
   // logout function
   const handleLogOut = () => {
     Swal.fire({
@@ -67,8 +64,6 @@ const Header = () => {
     });
   };
 
-
-
   return (
     <>
       {/* Content section start */}
@@ -90,12 +85,11 @@ const Header = () => {
             </div>
             
             {/* profile link */}
-            <Link to="/" className="avatar">
+            <Link to={`/singleUser/${user?.id}`} className="avatar">
               <div className="w-8 lg:w-9 rounded-full ring ring-white/50 ring-offset-base-100 ring-offset-2 overflow-hidden">
                 <img 
                   alt="User Profile"
-                  // src="https://cdn.pixabay.com/photo/2020/07/01/12/58/icon-5359553_640.png" 
-                  src={user?.image}
+                  src={user?.image === "default-image.png" ? '/default/default-image.png': user?.image}
                 />
               </div>
             </Link>
