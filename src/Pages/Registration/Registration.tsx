@@ -8,9 +8,7 @@ import { AuthContext } from "../../Components/AuthProvider/AuthProvider";
 const Register = () => {
   const authInfo = useContext(AuthContext);
   const navigate = useNavigate();
-  const [loading, setLoading] = useState<boolean>(false);
-
-  
+  const [btnLoading, setBtnLoading] = useState<boolean>(false);
 
   // form submit handle
   const registerFun = async (event: React.FormEvent<HTMLFormElement>): Promise<void> => {
@@ -38,7 +36,7 @@ const Register = () => {
       });
       return;
     }
-    setLoading(true);
+    setBtnLoading(true);
     
     // Whether the file was actually selected by the user and the first file (`[0]`) was taken as an object
     const imageFile = imageInput.files ? imageInput.files[0] : null;
@@ -55,7 +53,12 @@ const Register = () => {
 
     // registration api
     try{
-      const response = await axios.post(authInfo?.apiEndPoints?.registration, formData, {
+
+      // start global and local loading state
+      authInfo.setLoading(true);
+      setBtnLoading(true);
+
+      const response = await axios.post(`${authInfo?.baseURL}/user/registration`, formData, {
         headers: {
           "Content-Type": "multipart/form-data",
         },
@@ -80,7 +83,7 @@ const Register = () => {
         icon: "error",
       });
     }finally {
-      setLoading(false); 
+      setBtnLoading(false); 
     }
   };
 
@@ -136,8 +139,8 @@ const Register = () => {
                 
                 {/* Submit Button */}
                 <div className="form-control mt-6 w-full">
-                  <button type="submit" disabled={loading} className="btn bg-red-500 hover:bg-red-600 text-white w-full font-bold">
-                    {loading ? "User Created..." : "Register Account"}
+                  <button type="submit" disabled={btnLoading} className="btn bg-red-500 hover:bg-red-600 text-white w-full font-bold">
+                    {btnLoading ? "User Created..." : "Register Account"}
                   </button>
                 </div>
 

@@ -8,10 +8,7 @@ interface AuthContextType {
   loading: boolean;
   setLoading: Dispatch<SetStateAction<boolean>>;
   logOut: () => void;
-  apiEndPoints:{
-    registration: string;
-    login: string;
-  }
+  baseURL: string
 }
 
 // Initially, the value of the context may be null, so the type is set.
@@ -35,15 +32,12 @@ const AuthProvider = ({ children }: AuthProviderProps) => {
     setValidUser(null); 
   };
 
-  // api end point
-  const apiEndPoints = {
-    registration : "http://localhost:3002/api/v1/user/registration",
-    login : "http://localhost:3002/api/v1/user/login",
-  }
+  // common api path
+  const baseURL = "http://localhost:3002/api/v1";
 
 
   // sharing the context value
-  const userInfo = {validUser, setValidUser, loading,setLoading, logOut, apiEndPoints};
+  const userInfo = {validUser, setValidUser, loading,setLoading, logOut, baseURL};
 
   return (
     <AuthContext.Provider value={userInfo}>

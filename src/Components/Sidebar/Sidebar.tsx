@@ -26,6 +26,8 @@ const Sidebar = ({ active, toggleSideBar }: NavbarProps) => {
   const {validUser, logOut} = authInfo;
   const user = validUser?.user;
 
+  console.log(user?.id);
+
   // logout function
   const handleLogOut = () => {
     Swal.fire({

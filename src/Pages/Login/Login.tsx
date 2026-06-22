@@ -27,15 +27,13 @@ const Login = () => {
     // send user data
     const loginData = { email, password };
 
-    console.log("Login Data Collected:", loginData);
-
     try {
-      // 🚀 ১. গ্লোবাল এবং লোকাল লোডিং চালু হলো
+      // start global and local loading state
       authInfo.setLoading(true);
       setBtnLoading(true);
 
-      // 📡 ২. লগইন এপিআই কল
-      const response = await axios.post(authInfo.apiEndPoints.login, loginData);
+      // login api call
+      const response = await axios.post(`${authInfo?.baseURL}/user/login`, loginData);
 
       if (response.data) {
         const userData = response.data.user; 
