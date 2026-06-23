@@ -5,6 +5,7 @@ import { AuthContext } from "../../Components/AuthProvider/AuthProvider";
 import Swal from "sweetalert2";
 import LoadingCom from "../../Components/LoadingCom/LoadingCom";
 import ErrorCom from "../../Components/ErrorCom/ErrorCom";
+import { Link } from "react-router";
 
 interface User {
   _id: string;
@@ -80,6 +81,24 @@ const AllUsersAdmin = () => {
     updateMutation.mutate({ id, updatedData: { isActive: !currentStatus } });
   };
 
+  // handle delete user
+  const handleDeleteUser = (id: string, name: string) => {
+    Swal.fire({
+      title: `Are you sure to delete ${name}?`,
+      text: "This feature will be fully active after Order Model integration!",
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonColor: "#d33",
+      cancelButtonColor: "#3085d6",
+      confirmButtonText: "Yes, delete it!"
+    }).then((result) => {
+      if (result.isConfirmed) {
+        console.log("Deleting user with ID:", id);
+        // next time here we set api
+      }
+    });
+  };
+
   // loading component
   if (isLoading) {
     return <LoadingCom></LoadingCom>
@@ -101,8 +120,10 @@ const AllUsersAdmin = () => {
               <th>Image</th>
               <th>Name</th>
               <th>Email</th>
+              <th>Orders</th>
               <th>Role (Dropdown)</th>
               <th>Status (Toggle)</th>
+              <th>Actions</th>
             </tr>
           </thead>
           <tbody>
@@ -118,6 +139,7 @@ const AllUsersAdmin = () => {
                 </td>
                 <td className="font-semibold text-gray-800">{user.name}</td>
                 <td className="text-gray-600">{user.email}</td>
+                <td className="text-bold text-gray-600">{"00" || 0}</td>
                 {/* role start */}
                 <td>
                   <select 
@@ -144,6 +166,17 @@ const AllUsersAdmin = () => {
                   />
                 </td>
                 {/* status end */}
+                {/* button start */}
+                <td className="flex items-center gap-2 mt-4">
+                <Link to={`/singleUser/${user?._id}`}>
+                    <button className="btn btn-sm bg-green-500 border-none font-bold text-white px-3 mr-1">View</button>
+                </Link>
+                <button onClick={() => handleDeleteUser(user._id, user.name)} 
+                  disabled={currentAdminId === user._id || currentAdminId === user.id}
+                  className={`btn btn-sm border-none text-white px-3 font-bold ${currentAdminId === user._id || currentAdminId === user.id 
+                      ? 'bg-gray-300 text-gray-500 cursor-not-allowed' 
+                      : 'bg-red-500'}`}>Delete</button>
+              </td>
               </tr>
             ))}
           </tbody>
