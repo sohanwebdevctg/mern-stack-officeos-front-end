@@ -26,8 +26,6 @@ const Sidebar = ({ active, toggleSideBar }: NavbarProps) => {
   const {validUser, logOut} = authInfo;
   const user = validUser?.user;
 
-  console.log(user?.id);
-
   // logout function
   const handleLogOut = () => {
     Swal.fire({
@@ -57,6 +55,16 @@ const Sidebar = ({ active, toggleSideBar }: NavbarProps) => {
     });
   };
 
+  // admin router list
+  const adminRouter = <>
+    <li>{active ? (<NavLink className={({ isActive }) => isActive ? "sm:text-[8px] md:text-[10px] lg:text-xs xl:text-sm 2xl:text-sm font-bold text-red-500" : "sm:text-[8px] md:text-[10px] lg:text-xs xl:text-sm 2xl:text-sm text-white"} to="/allUserAdmin">AllUserAdmin</NavLink>) : (<NavLink className={({ isActive }) => isActive ? "text-red-500" : "text-white"} to="/allUserAdmin"><MdNotificationAdd className="text-xl xl:text-3xl mx-auto" /></NavLink>)}</li>
+  </>;
+
+  // manager router list
+  const managerRouter = <>
+    <li>{active ? (<NavLink className={({ isActive }) => isActive ? "sm:text-[8px] md:text-[10px] lg:text-xs xl:text-sm 2xl:text-sm font-bold text-red-500" : "sm:text-[8px] md:text-[10px] lg:text-xs xl:text-sm 2xl:text-sm text-white"} to="/allUserManager">AllUserManager</NavLink>) : (<NavLink className={({ isActive }) => isActive ? "text-red-500" : "text-white"} to="/allUserManager"><MdNotificationAdd className="text-xl xl:text-3xl mx-auto" /></NavLink>)}</li>
+  </>;
+
   return (
     <>
       {/* desktop content section start */}
@@ -76,43 +84,11 @@ const Sidebar = ({ active, toggleSideBar }: NavbarProps) => {
         </div>
         <ul className="flex flex-col gap-2 md:gap-3">
           {/* Home Link */}
-          <li>
-            {active ? (
-              <NavLink className={({ isActive }) => isActive ? "sm:text-[8px] md:text-[10px] lg:text-xs xl:text-sm 2xl:text-sm font-bold text-red-500" : "sm:text-[8px] md:text-[10px] lg:text-xs xl:text-sm 2xl:text-sm text-white"} to="/">Home</NavLink>
-            ) : (
-              <NavLink className={({ isActive }) => isActive ? "text-red-500" : "text-white"} to="/"><MdDashboard className="text-xl xl:text-3xl mx-auto" /></NavLink>
-            )}
-          </li>
-
+          <li>{active ? (<NavLink className={({ isActive }) => isActive ? "sm:text-[8px] md:text-[10px] lg:text-xs xl:text-sm 2xl:text-sm font-bold text-red-500" : "sm:text-[8px] md:text-[10px] lg:text-xs xl:text-sm 2xl:text-sm text-white"} to="/">Home</NavLink>) : (<NavLink className={({ isActive }) => isActive ? "text-red-500" : "text-white"} to="/"><MdDashboard className="text-xl xl:text-3xl mx-auto" /></NavLink>)}</li>
           {/* UserOrder Link - Admin Only */}
-          {user?.roleName === "admin" && (
-            <li>
-              {active ? (
-                <NavLink className={({ isActive }) => isActive ? "sm:text-[8px] md:text-[10px] lg:text-xs xl:text-sm 2xl:text-sm font-bold text-red-500" : "sm:text-[8px] md:text-[10px] lg:text-xs xl:text-sm 2xl:text-sm text-white"} to="/allUserAdmin">AllUserAdmin</NavLink>
-              ) : (
-                <NavLink className={({ isActive }) => isActive ? "text-red-500" : "text-white"} to="/allUserAdmin"><MdNotificationAdd className="text-xl xl:text-3xl mx-auto" /></NavLink>
-              )}
-            </li>
-          )}
-          {/* UserOrder Link - Admin Only */}
-          {user?.roleName === "manager" && (
-            <li>
-              {active ? (
-                <NavLink className={({ isActive }) => isActive ? "sm:text-[8px] md:text-[10px] lg:text-xs xl:text-sm 2xl:text-sm font-bold text-red-500" : "sm:text-[8px] md:text-[10px] lg:text-xs xl:text-sm 2xl:text-sm text-white"} to="/allUserManager">AllUserManager</NavLink>
-              ) : (
-                <NavLink className={({ isActive }) => isActive ? "text-red-500" : "text-white"} to="/allUserManager"><MdNotificationAdd className="text-xl xl:text-3xl mx-auto" /></NavLink>
-              )}
-            </li>
-          )}
-
-          {/* UserProfile Link */}
-          <li>
-            {active ? (
-              <NavLink className={({ isActive }) => isActive ? "sm:text-[8px] md:text-[10px] lg:text-xs xl:text-sm 2xl:text-sm font-bold text-red-500" : "sm:text-[8px] md:text-[10px] lg:text-xs xl:text-sm 2xl:text-sm text-white"} to="/user-profile">UserProfile</NavLink>
-            ) : (
-              <NavLink className={({ isActive }) => isActive ? "text-red-500" : "text-white"} to="/user-profile"><FaUserCircle className="text-xl xl:text-3xl mx-auto" /></NavLink>
-            )}
-          </li>
+          {user?.roleName === "admin" && (adminRouter)}
+          {/* UserOrder Link - manager Only */}
+          {user?.roleName === "manager" && (managerRouter)}
         </ul>
 
         {/* LogOut Button */}
