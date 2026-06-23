@@ -1,4 +1,4 @@
-import { Link, useParams } from "react-router";
+import { Link, useNavigate, useParams } from "react-router";
 import { AuthContext } from "../../Components/AuthProvider/AuthProvider";
 import { useContext, useEffect, useState } from "react";
 import axios from "axios";
@@ -16,6 +16,7 @@ interface UserData {
 const SingleUser = () => {
 
   const {id} = useParams<{id:string}>();
+  const navigate = useNavigate();
   const authInfo = useContext(AuthContext);
   const [profileData, setProfileData] = useState<UserData | null>(null);
 
@@ -86,8 +87,10 @@ const SingleUser = () => {
                 <li>
                   {/* button start */}
                   <Link to="/editUser">
-                    <button className="btn bg-red-500 hover:bg-red-600 border-none font-bold text-white px-4">Edit</button>
+                    <button className="btn bg-green-500 border-none font-bold text-white px-4 mr-1">Edit</button>
                   </Link>
+                  <button onClick={() => navigate(-1)} className="btn bg-red-500 border-none font-bold text-white px-4">Back</button>
+
                   {/* button end */}
                 </li>
               </ul>
