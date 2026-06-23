@@ -10,6 +10,9 @@ import AllUserAdmin from "../Pages/AllUserAdmin/AllUserAdmin";
 import AllUserManager from "../Pages/AllUserManager/AllUserManager";
 import UpdateSingleUser from "../Pages/UpdateSingleUser/UpdateSingleUser";
 import AllPost from "../Pages/AllPost/AllPost";
+import AdminRoute from "./AdminRoute";
+import ManagerRoute from "./ManagerRoute";
+
 
 
 
@@ -25,11 +28,11 @@ const router = createBrowserRouter([
     },
     {
       path: '/allUserAdmin',
-      element: <AllUserAdmin></AllUserAdmin>
+      element: <AdminRoute><AllUserAdmin></AllUserAdmin></AdminRoute>
     },
     {
       path: '/allUserManager',
-      element: <AllUserManager></AllUserManager>
+      element: <ManagerRoute><AllUserManager></AllUserManager></ManagerRoute>
     },
     { 
       path: '/singleUser/:id',

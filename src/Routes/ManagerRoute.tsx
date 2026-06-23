@@ -3,14 +3,13 @@ import { AuthContext } from "../Components/AuthProvider/AuthProvider";
 import LoadingCom from "../Components/LoadingCom/LoadingCom";
 import { Navigate } from "react-router";
 
-interface PrivateRouteProps{
-  children: ReactNode
+interface ManagerRouteProps {
+  children: ReactNode;
 }
 
-const PrivateRoute = ({children}: PrivateRouteProps) => {
-
+const ManagerRoute = ({ children }: ManagerRouteProps) => {
   const authInfo = useContext(AuthContext);
-  
+
   // loading state data change
   useEffect(() => {
     if (authInfo?.loading) {
@@ -25,25 +24,23 @@ const PrivateRoute = ({children}: PrivateRouteProps) => {
   const user = validUser?.user;
 
   // checking user active, roleName, role condition
-  const isUserValid = 
+  const isManagerValid = 
     user && 
     user.isActive === true && 
-    user.roleName !== null && 
-    (user.roleName === "admin" || user.roleName === "manager" || user.roleName === "employee");
+    user.roleName === "manager";
 
   // loading check
-  if(loading){
-    return <LoadingCom></LoadingCom>
+  if (loading) {
+    return <LoadingCom></LoadingCom>;
   }
 
   // redirect user
-  if (isUserValid) {
+  if (isManagerValid) {
     return children;
   }
 
   // navigate user
   return <Navigate to="/login" replace />;
-  
 };
 
-export default PrivateRoute;
+export default ManagerRoute;
