@@ -133,7 +133,6 @@ const Register = () => {
                   <label className="label py-1">
                     <span className="label-text font-medium text-sm">Profile Image (Optional)</span>
                   </label>
-                  {/* 🛠️ এখানে accept="image/*" দিয়ে দেওয়া হলো যাতে ইউজার শুধু ইমেজ ফাইলই সিলেক্ট করতে পারে */}
                   <input type="file" accept="image/*" className="file-input input-bordered w-full" name="image" />
                 </div>
                 

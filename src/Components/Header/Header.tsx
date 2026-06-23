@@ -131,6 +131,10 @@ const Header = () => {
           <li onClick={() => setToggle(!toggle)}>
             <NavLink className={({ isActive }) => isActive ? "text-base font-bold text-red-500" : "text-base text-white hover:text-red-400 transition"}to="/">Home</NavLink>
           </li>
+          {/* Post Link */}
+          <li onClick={() => setToggle(!toggle)}>
+            <NavLink className={({ isActive }) => isActive ? "text-base font-bold text-red-500" : "text-base text-white hover:text-red-400 transition"}to="/allPost">Post</NavLink>
+          </li>
           {/* UserOrder Link - Admin Only */}
           {user?.roleName === "admin" && (adminRouter)}
           {/* UserOrder Link - manager Only */}

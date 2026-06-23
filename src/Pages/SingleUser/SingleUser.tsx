@@ -91,7 +91,7 @@ const SingleUser = () => {
                 </li>
                 <li>
                   {/* button start */}
-                  {isOwnProfile && (<Link to={`/editUser/${profileData?._id}`}>
+                  {isOwnProfile && (<Link to={`/updateSingleUser/${profileData?._id}`}>
                     <button className="btn bg-green-500 border-none font-bold text-white px-4 mr-1">Edit</button>
                   </Link>)}
                   <button onClick={() => navigate(-1)} className="btn bg-red-500 border-none font-bold text-white px-4">Back</button>

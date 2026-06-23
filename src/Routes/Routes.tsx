@@ -8,7 +8,8 @@ import PrivateRoute from "./PrivateRoute";
 import SingleUser from "../Pages/SingleUser/SingleUser";
 import AllUserAdmin from "../Pages/AllUserAdmin/AllUserAdmin";
 import AllUserManager from "../Pages/AllUserManager/AllUserManager";
-// import axios from "axios";
+import UpdateSingleUser from "../Pages/UpdateSingleUser/UpdateSingleUser";
+import AllPost from "../Pages/AllPost/AllPost";
 
 
 
@@ -33,7 +34,15 @@ const router = createBrowserRouter([
     { 
       path: '/singleUser/:id',
       element: <SingleUser></SingleUser>
-    }
+    },
+    { 
+      path: '/updateSingleUser/:id',
+      element: <UpdateSingleUser></UpdateSingleUser>
+    },
+    { 
+      path: '/allPost',
+      element: <AllPost></AllPost>
+    },
     ]
   },
   {
