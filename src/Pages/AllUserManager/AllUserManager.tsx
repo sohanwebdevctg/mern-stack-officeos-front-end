@@ -4,6 +4,7 @@ import axios from "axios";
 import { AuthContext } from "../../Components/AuthProvider/AuthProvider";
 import LoadingCom from "../../Components/LoadingCom/LoadingCom";
 import ErrorCom from "../../Components/ErrorCom/ErrorCom";
+import { Link } from "react-router";
 
 interface User {
   _id: string;
@@ -56,8 +57,10 @@ const AllUsersManager = () => {
               <th>Image</th>
               <th>Name</th>
               <th>Email</th>
+              <th>Orders</th>
               <th>Role</th>
               <th>Status</th>
+              <th>Actions</th>
             </tr>
           </thead>
           <tbody>
@@ -76,6 +79,7 @@ const AllUsersManager = () => {
                 </td>
                 <td className="font-semibold text-gray-800">{user.name}</td>
                 <td className="text-gray-600">{user.email}</td>
+                <td className="text-bold text-gray-600">{"00" || 0}</td>
                 <td>
                   {user.roleName ? (
                     <span className="badge badge-neutral font-semibold uppercase text-[11px] px-2 py-2">
@@ -98,6 +102,11 @@ const AllUsersManager = () => {
                     </span>
                   )}
                 </td>
+                {/* button start */}
+                <td className=" mt-4">
+                  <Link to={`/singleUser/${user?._id}`}><button className="btn btn-sm bg-green-500 border-none font-bold text-white px-3 ">View</button></Link>
+                </td>
+                {/* button end */}
               </tr>
             ))}
           </tbody>

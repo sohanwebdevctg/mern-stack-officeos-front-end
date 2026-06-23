@@ -176,7 +176,8 @@ const AllUsersAdmin = () => {
                   className={`btn btn-sm border-none text-white px-3 font-bold ${currentAdminId === user._id || currentAdminId === user.id 
                       ? 'bg-gray-300 text-gray-500 cursor-not-allowed' 
                       : 'bg-red-500'}`}>Delete</button>
-              </td>
+                </td>
+                {/* button end */}
               </tr>
             ))}
           </tbody>
