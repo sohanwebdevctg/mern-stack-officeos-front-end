@@ -46,7 +46,7 @@ const AllUsersManager = () => {
 
   return (
     <div className="container mx-auto p-5 my-5 bg-white shadow-md rounded-xl">
-      <h3 className="text-md sm:text-lg lg:text-2xl font-bold text-gray-800 mb-5 border-b pb-2 ">
+      <h3 className="text-md sm:text-lg lg:text-2xl font-bold text-red-500 mb-5 border-b-red-500 border-b-2 pb-2 ">
         Manager Panel - View Users ({users.length})
       </h3>
       <div className="overflow-x-auto">

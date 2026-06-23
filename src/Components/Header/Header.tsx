@@ -64,6 +64,26 @@ const Header = () => {
     });
   };
 
+  // admin router list
+  const adminRouter = <>
+    <li onClick={() => setToggle(!toggle)}><NavLink className={({ isActive }) => isActive ? "text-base font-bold text-red-500" : "text-base text-white hover:text-red-400 transition"}to="/allUserAdmin">AllUserAdmin</NavLink>
+    </li>
+    </>;
+
+  // manager router list
+  const managerRouter = <>
+    <li onClick={() => setToggle(!toggle)}>
+              <NavLink
+                className={({ isActive }) =>
+                  isActive ? "text-base font-bold text-red-500" : "text-base text-white hover:text-red-400 transition"
+                }
+                to="/allUserManager"
+              >
+                AllUserManager
+              </NavLink>
+            </li>
+  </>;
+
   return (
     <>
       {/* Content section start */}
@@ -107,40 +127,15 @@ const Header = () => {
         style={{ backgroundColor: 'rgba(0, 0, 0, 0.95)' }}
       >
         <ul className="flex flex-col justify-center items-center h-full w-full gap-5 p-6">
+          {/* Home Link */}
           <li onClick={() => setToggle(!toggle)}>
-            <NavLink
-              className={({ isActive }) =>
-                isActive ? "text-base font-bold text-red-500" : "text-base text-white hover:text-red-400 transition"
-              }
-              to="/about"
-            >
-              Home
-            </NavLink>
+            <NavLink className={({ isActive }) => isActive ? "text-base font-bold text-red-500" : "text-base text-white hover:text-red-400 transition"}to="/">Home</NavLink>
           </li>
-          
-          {user?.roleName === "admin" && (
-            <li onClick={() => setToggle(!toggle)}>
-              <NavLink
-                className={({ isActive }) =>
-                  isActive ? "text-base font-bold text-red-500" : "text-base text-white hover:text-red-400 transition"
-                }
-                to="/user-order-table"
-              >
-                UserOrder
-              </NavLink>
-            </li>
-          )}
-          <li onClick={() => setToggle(!toggle)}>
-            <NavLink
-              className={({ isActive }) =>
-                isActive ? "text-base font-bold text-red-500" : "text-base text-white hover:text-red-400 transition"
-              }
-              to="/user-profile"
-            >
-              UserProfile
-            </NavLink>
-          </li>
-
+          {/* UserOrder Link - Admin Only */}
+          {user?.roleName === "admin" && (adminRouter)}
+          {/* UserOrder Link - manager Only */}
+          {user?.roleName === "manager" && (managerRouter)}
+          {/* Logout Button */}
           <li onClick={() => { setToggle(!toggle); handleLogOut(); }}>
             <button className="text-base font-bold text-red-500 hover:text-red-400 cursor-pointer transition">
               LogOut

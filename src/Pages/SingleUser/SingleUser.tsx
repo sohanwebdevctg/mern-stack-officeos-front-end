@@ -62,7 +62,7 @@ const SingleUser = () => {
         {/* content section start */}
         <div className="container mx-auto px-2 sm:px-4 lg:px-8 xl:px-10 flex items-center justify-center">
           {/* user start */}
-          <div className="flex flex-col sm:flex-row justify-center items-center w-4/5 sm:w-2/3 md:w-2/3 lg:w-2/3 xl:1/2 shadow-md shadow-slate-200 p-5 gap-2 sm:gap-5 mt-5">
+          <div className="flex flex-col sm:flex-row justify-center items-center w-[95%] sm:w-[90%] md:w-4/5 lg:w-2/3 xl:1/2 shadow-md shadow-slate-200 p-5 gap-2 sm:gap-5 mt-5">
             {/* img start */}
             <div className="avatar online">
               <div className="w-20 sm:w-24 md:w-28 lg:w-32 xl:w-36 2xl:w-40 rounded-full">
