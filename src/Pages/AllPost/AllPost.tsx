@@ -131,20 +131,20 @@ const AllPost = () => {
             <div className="card-actions justify-end">
               {/* button start */}
               {post.user?._id?.toString() === loggedInUserId?.toString() && (
-  <>
-    <Link to={`/updateSinglePost/${post._id}`}>
-      <button className="btn btn-sm bg-green-500 border-none font-bold text-white px-4">
-        Edit
-      </button>
-    </Link>
-    <button
-      onClick={() => handleDelete(post._id)}
-      className="btn btn-sm bg-red-500 border-none font-bold text-white px-4"
-    >
-      Delete
-    </button>
-  </>
-)}
+              <>
+                <Link to={`/updateSinglePost/${post._id}`}>
+                  <button className="btn btn-sm bg-green-500 border-none font-bold text-white px-4">
+                    Edit
+                  </button>
+                </Link>
+                <button
+                  onClick={() => handleDelete(post._id)}
+                  className="btn btn-sm bg-red-500 border-none font-bold text-white px-4"
+                >
+                  Delete
+                </button>
+              </>
+            )}
               {/* button end */}
             </div>
             {/* post details end */}

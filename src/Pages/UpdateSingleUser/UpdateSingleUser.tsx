@@ -126,8 +126,6 @@ const UpdateSingleUser = () => {
     }
   };
 
-
-
   return (
     <div className="my-8 bg-white h-full sm:h-screen flex items-center px-5">
         <div className="container mx-auto">

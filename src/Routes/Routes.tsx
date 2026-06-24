@@ -13,6 +13,7 @@ import AllPost from "../Pages/AllPost/AllPost";
 import AdminRoute from "./AdminRoute";
 import ManagerRoute from "./ManagerRoute";
 import CreatePost from "../Pages/CreatePost/CreatePost";
+import UpdateSinglePost from "../Pages/UpdateSinglePost/UpdateSinglePost";
 
 
 
@@ -50,6 +51,10 @@ const router = createBrowserRouter([
     {
       path: '/createPost',
       element: <CreatePost></CreatePost>
+    },
+    {
+      path: '/updateSinglePost/:id',
+      element: <UpdateSinglePost></UpdateSinglePost>
     }
     ]
   },
