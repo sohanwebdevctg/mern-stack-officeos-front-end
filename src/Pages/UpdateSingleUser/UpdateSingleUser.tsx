@@ -134,7 +134,7 @@ const UpdateSingleUser = () => {
           <div className="p-3 bg-base-100 w-full shadow-2xl mt-5 sm:w-11/12 md:w-10/12 lg:w-10/12 xl:w-8/12 2xl:w-9/12 mx-auto">
             <form onSubmit={updateFun} className="w-full flex justify-between items-center"
             >
-              {/* Left Side: Registration Fields */}
+              {/* update user */}
               <div className="flex-1 p-5">
                 <div className="form-control sm:text-center">
                   <h3 className="text-xl sm:text-2xl text-red-500 font-bold mb-4">Update User</h3>
@@ -192,7 +192,7 @@ const UpdateSingleUser = () => {
             </form>
           </div>
         </div>
-      </div>
+    </div>
   );
 };
 
