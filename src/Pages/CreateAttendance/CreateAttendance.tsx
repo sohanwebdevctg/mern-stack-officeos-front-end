@@ -129,12 +129,12 @@ const CreateAttendance = () => {
         <h3 className="text-md sm:text-lg md:text-xl lg:text-2xl font-bold text-red-500">Attendance Portal</h3>
         <div className="flex gap-2">
           {userRole === "admin" && (
-            <Link to="/admin/attendance">
+            <Link to="/adminAttendance">
               <button className="btn btn-sm bg-green-500 border-none font-bold text-white px-2 md:px-3 py-1 lg:py-5 sm:text-[9px] md:text-[12px] lg:text-[14px]">All Attendance</button>
             </Link>
           )}
           {userRole === "manager" && (
-            <Link to="/manager/attendance">
+            <Link to="/managerAttendance">
               <button className="btn btn-sm bg-green-500 border-none font-bold text-white px-2 md:px-3 py-1 lg:py-5 sm:text-[9px] md:text-[12px] lg:text-[14px]">All Attendance</button>
             </Link>
           )}
