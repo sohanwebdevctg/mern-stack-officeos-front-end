@@ -3,6 +3,7 @@ import { useNavigate } from "react-router";
 import { AuthContext } from "../../Components/AuthProvider/AuthProvider";
 import { useQuery } from "@tanstack/react-query";
 import axios from "axios";
+import LoadingCom from "../../Components/LoadingCom/LoadingCom";
 
 interface UserInfo {
   name: string;
@@ -39,6 +40,11 @@ const AdminAttendance = () => {
     },
     enabled: !!token,
   });
+
+  // loading component
+  if (isLoading) {
+    return <LoadingCom></LoadingCom>
+  };
 
   return (
     <div className="p-5 max-w-7xl mx-auto">
@@ -83,7 +89,7 @@ const AdminAttendance = () => {
                       <td>
                         <div className="flex items-center gap-3">
                           <div className="avatar">
-                            <div className="w-10 h-10 rounded-full ring-1 ring-blue-500">
+                            <div className="w-10 h-10 rounded-full">
                               <img 
                                 src={userImg === "default-image.png" || !userImg ? "/default/default-image.png" : userImg} 
                                 alt="User" 
