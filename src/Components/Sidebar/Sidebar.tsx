@@ -4,6 +4,7 @@ import { GiHamburgerMenu } from "react-icons/gi";
 import { IoClose, IoLogOut } from "react-icons/io5";
 import { MdDashboard } from "react-icons/md";
 import { IoIosCreate } from "react-icons/io";
+import { FaClipboardUser } from "react-icons/fa6";
 import { NavLink, useNavigate } from "react-router"; 
 import Swal from "sweetalert2";
 import { AuthContext } from "../AuthProvider/AuthProvider";
@@ -88,6 +89,8 @@ const Sidebar = ({ active, toggleSideBar }: NavbarProps) => {
           <li>{active ? (<NavLink className={({ isActive }) => isActive ? "sm:text-[8px] md:text-[10px] lg:text-xs xl:text-sm 2xl:text-sm font-bold text-red-500" : "sm:text-[8px] md:text-[10px] lg:text-xs xl:text-sm 2xl:text-sm text-white"} to="/">Home</NavLink>) : (<NavLink className={({ isActive }) => isActive ? "text-red-500" : "text-white"} to="/"><MdDashboard className="text-xl xl:text-3xl mx-auto" /></NavLink>)}</li>
           {/* Post Link */}
           <li>{active ? (<NavLink className={({ isActive }) => isActive ? "sm:text-[8px] md:text-[10px] lg:text-xs xl:text-sm 2xl:text-sm font-bold text-red-500" : "sm:text-[8px] md:text-[10px] lg:text-xs xl:text-sm 2xl:text-sm text-white"} to="/allPost">Post</NavLink>) : (<NavLink className={({ isActive }) => isActive ? "text-red-500" : "text-white"} to="/allPost"><IoIosCreate className="text-xl xl:text-3xl mx-auto" /></NavLink>)}</li>
+          {/* Attendance Link */}
+          <li>{active ? (<NavLink className={({ isActive }) => isActive ? "sm:text-[8px] md:text-[10px] lg:text-xs xl:text-sm 2xl:text-sm font-bold text-red-500" : "sm:text-[8px] md:text-[10px] lg:text-xs xl:text-sm 2xl:text-sm text-white"} to="/createAttendance">Attendance</NavLink>) : (<NavLink className={({ isActive }) => isActive ? "text-red-500" : "text-white"} to="/createAttendance"><FaClipboardUser className="text-xl xl:text-3xl mx-auto" /></NavLink>)}</li>
           {/* UserOrder Link - Admin Only */}
           {user?.roleName === "admin" && (adminRouter)}
           {/* UserOrder Link - manager Only */}

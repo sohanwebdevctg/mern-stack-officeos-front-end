@@ -98,7 +98,7 @@ const AllPost = () => {
   return (
     <div>
       <div className="flex justify-between items-center mb-5 border-b-red-500 border-b-2 pb-2">
-        <h3 className="text-md sm:text-lg md:text-xl lg:text-2xl font-bold text-red-500 ">All Posts ({posts.length ? posts.length : 0})</h3>
+        <h3 className="text-md sm:text-lg md:text-xl lg:text-2xl font-bold text-red-500">All Posts ({posts.length ? posts.length : 0})</h3>
         <Link to="/createPost">
           <button className="btn btn-sm bg-green-500 border-none font-bold text-white px-2 md:px-3 py-1 lg:py-5 sm:text-[10px] md:text-[12px] lg:text-[14px]">Create Post</button></Link>
       </div>

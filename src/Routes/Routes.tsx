@@ -14,6 +14,7 @@ import AdminRoute from "./AdminRoute";
 import ManagerRoute from "./ManagerRoute";
 import CreatePost from "../Pages/CreatePost/CreatePost";
 import UpdateSinglePost from "../Pages/UpdateSinglePost/UpdateSinglePost";
+import CreateAttendance from "../Pages/CreateAttendance/CreateAttendance";
 
 
 
@@ -55,7 +56,11 @@ const router = createBrowserRouter([
     {
       path: '/updateSinglePost/:id',
       element: <UpdateSinglePost></UpdateSinglePost>
-    }
+    },
+    {
+      path: '/createAttendance',
+      element: <CreateAttendance></CreateAttendance>
+    },
     ]
   },
   {
