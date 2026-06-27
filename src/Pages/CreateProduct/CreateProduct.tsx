@@ -1,6 +1,8 @@
 import { useContext, useState } from "react";
 import { useNavigate } from "react-router";
 import { AuthContext } from "../../Components/AuthProvider/AuthProvider";
+import Swal from "sweetalert2";
+import axios from "axios";
 
 
 const CreateProduct = () => {
@@ -19,6 +21,65 @@ const CreateProduct = () => {
     if (!authInfo) return;
 
     const form = event.target as HTMLFormElement;
+
+    // collect the form input data
+    const name = (form.elements.namedItem("name") as HTMLInputElement).value;
+    const description = (form.elements.namedItem("description") as HTMLTextAreaElement).value;
+    const price = (form.elements.namedItem("price") as HTMLInputElement).value;
+    const limit = (form.elements.namedItem("limit") as HTMLInputElement).value;
+
+
+    // image file input element
+    const imageInput = form.elements.namedItem("image") as HTMLInputElement;
+
+    setBtnLoading(true);
+
+    // Whether the file was actually selected by the user and the first file (`[0]`) was taken as an object
+    const imageFile = imageInput.files ? imageInput.files?.[0] : 'default-image.png';
+
+    // send multiple form data
+    const formData = new FormData();
+    formData.append("name", name);
+    formData.append("description", description);
+    formData.append("price", price);
+    formData.append("limit", limit);
+    
+    if (imageFile) {
+      formData.append("image", imageFile);
+    }
+
+    // create api
+    try {
+
+      const response = await axios.post(`${baseURL}/product/createProduct`, formData, {
+        headers: {
+          "Content-Type": "multipart/form-data",
+          Authorization: `Bearer ${token}`,
+        },
+      });
+
+      if (response.data?.success) {
+        
+        Swal.fire({
+          title: "Success!",
+          text: response.data?.message || "Product created successfully! Pending for Admin approval.",
+          icon: "success",
+          confirmButtonColor: "#22c55e",
+        });
+
+        form.reset();
+      }
+    } catch (error: any) {
+      console.error("Product creation error:", error);
+      Swal.fire({
+        title: "Error!",
+        text: error.response?.data?.message || "Something went wrong while creating product.",
+        icon: "error",
+        confirmButtonColor: "#ef4444",
+      });
+    } finally {
+      setBtnLoading(false);
+    }
   }
 
 
@@ -33,7 +94,7 @@ const CreateProduct = () => {
                 <div className="form-control sm:text-center">
                   <h3 className="text-xl sm:text-2xl text-red-500 font-bold mb-4">Create Product</h3>
                 </div>
-                {/* Title Input */}
+                {/* Name Input */}
                 <div className="form-control">
                   <label className="label py-1">
                     <span className="label-text font-medium text-sm">Product Name</span>
@@ -41,7 +102,6 @@ const CreateProduct = () => {
                   <input type="text" placeholder="create your product name" className="input input-bordered w-full" name="name" required
                   />
                 </div>
-
                 {/* Description Input */}
                 <div className="form-control">
                   <label className="label py-1">
