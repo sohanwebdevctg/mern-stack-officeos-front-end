@@ -208,7 +208,7 @@ const totalProducts = adminProducts?.length || 0;
                       </Link>
 
                       {/* Update Button */}
-                      <Link to={`/updateProduct/${product?._id}`}>
+                      <Link to={`/updateSingleProduct/${product?._id}`}>
                         <button className="btn btn-sm bg-blue-500 border-none font-bold text-white px-3">
                           Update
                         </button>
