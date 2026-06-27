@@ -17,6 +17,7 @@ import UpdateSinglePost from "../Pages/UpdateSinglePost/UpdateSinglePost";
 import CreateAttendance from "../Pages/CreateAttendance/CreateAttendance";
 import AdminAttendance from "../Pages/AdminAttendance/AdminAttendance";
 import ManagerAttendance from "../Pages/ManagerAttendance/ManagerAttendance";
+import CreateProduct from "../Pages/CreateProduct/CreateProduct";
 
 
 
@@ -70,6 +71,10 @@ const router = createBrowserRouter([
     {
       path: '/managerAttendance',
       element: <ManagerRoute><ManagerAttendance></ManagerAttendance></ManagerRoute>
+    },
+    {
+      path: '/createProduct',
+      element: <CreateProduct></CreateProduct>
     },
     ]
   },
