@@ -176,7 +176,6 @@ const totalProducts = adminProducts?.length || 0;
                   {/* limit */}
                   <td className="text-center font-semibold text-gray-600">{product.limit}</td>
                   <td className="text-center font-semibold text-gray-600">{"00"}</td>
-
                   {/* approved conditional button */}
                   <td>
                     {product.isApproved ? (
