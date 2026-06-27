@@ -18,6 +18,7 @@ import CreateAttendance from "../Pages/CreateAttendance/CreateAttendance";
 import AdminAttendance from "../Pages/AdminAttendance/AdminAttendance";
 import ManagerAttendance from "../Pages/ManagerAttendance/ManagerAttendance";
 import CreateProduct from "../Pages/CreateProduct/CreateProduct";
+import AllProductAdmin from "../Pages/AllProductAdmin/AllProductAdmin";
 
 
 
@@ -75,6 +76,10 @@ const router = createBrowserRouter([
     {
       path: '/createProduct',
       element: <CreateProduct></CreateProduct>
+    },
+        {
+      path: '/allProductAdmin',
+      element: <AdminRoute><AllProductAdmin></AllProductAdmin></AdminRoute>
     },
     ]
   },

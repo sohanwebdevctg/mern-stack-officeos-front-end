@@ -60,6 +60,7 @@ const Sidebar = ({ active, toggleSideBar }: NavbarProps) => {
   // admin router list
   const adminRouter = <>
     <li>{active ? (<NavLink className={({ isActive }) => isActive ? "sm:text-[8px] md:text-[10px] lg:text-xs xl:text-sm 2xl:text-sm font-bold text-red-500" : "sm:text-[8px] md:text-[10px] lg:text-xs xl:text-sm 2xl:text-sm text-white"} to="/allUserAdmin">AllUserAdmin</NavLink>) : (<NavLink className={({ isActive }) => isActive ? "text-red-500" : "text-white"} to="/allUserAdmin"><FaUsers className="text-xl xl:text-3xl mx-auto" /></NavLink>)}</li>
+    <li>{active ? (<NavLink className={({ isActive }) => isActive ? "sm:text-[8px] md:text-[10px] lg:text-xs xl:text-sm 2xl:text-sm font-bold text-red-500" : "sm:text-[8px] md:text-[10px] lg:text-xs xl:text-sm 2xl:text-sm text-white"} to="/allProductAdmin">AllProductAdmin</NavLink>) : (<NavLink className={({ isActive }) => isActive ? "text-red-500" : "text-white"} to="/allProductAdmin"><FaUsers className="text-xl xl:text-3xl mx-auto" /></NavLink>)}</li>
   </>;
 
   // manager router list
