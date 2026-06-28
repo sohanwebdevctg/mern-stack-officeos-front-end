@@ -43,4 +43,20 @@ const removeUser = (): void => {
 
 /* user data end */
 
-export { getUser, setUser, removeUser };
+/* card data start */
+
+// get cart product
+const getCart = () : any[] => {
+  const savedCart = localStorage.getItem("productCartData");
+  return savedCart ? JSON.parse(savedCart) : [];
+}
+
+
+// save cart product
+const saveCart = (cartData : any[]) => {
+  localStorage.setItem("productCartData", JSON.stringify(cartData));
+}
+
+/* card data end */
+
+export { getUser, setUser, removeUser, getCart, saveCart };

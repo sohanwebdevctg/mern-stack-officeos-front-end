@@ -15,9 +15,10 @@ interface ProductCardsProps {
     image: string;
     createdBy?: UserData
   };
+  handleAddToCart: (id: string) => void;
 }
 
-const ProductCards = ({ item }: ProductCardsProps) => {
+const ProductCards = ({ item, handleAddToCart }: ProductCardsProps) => {
   return (
     <div className="bg-white shadow-lg p-2 flex flex-col gap-5 sm:justify-between rounded-md h-full sm:h-52">
       {/* image section */}
@@ -45,7 +46,7 @@ const ProductCards = ({ item }: ProductCardsProps) => {
         
         {/* add product */}
         <li className="pt-1">
-          <button onClick={() => console.log("Clicked:", item._id)} className="text-xs bg-green-500 hover:bg-green-600 py-1 w-full font-bold text-white rounded-md transition-colors">Add</button>
+          <button onClick={() => handleAddToCart(item?._id)} className="text-xs bg-green-500 hover:bg-green-600 py-1 w-full font-bold text-white rounded-md transition-colors">Add</button>
         </li>
       </ul>
     </div>
