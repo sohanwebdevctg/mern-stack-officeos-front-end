@@ -57,6 +57,10 @@ const saveCart = (cartData : any[]) => {
   localStorage.setItem("productCartData", JSON.stringify(cartData));
 }
 
+const clearCart = () => {
+  localStorage.removeItem("productCartData");
+};
+
 /* card data end */
 
-export { getUser, setUser, removeUser, getCart, saveCart };
+export { getUser, setUser, removeUser, getCart, saveCart, clearCart };

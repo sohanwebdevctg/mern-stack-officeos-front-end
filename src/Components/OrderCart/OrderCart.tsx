@@ -3,9 +3,10 @@ interface OrderCartProps{
   cart: any[];
   handleUpdateQuantity: (id:string, action: "increase" | "decrease") => void;
   handleDeleteCartItem: (id: string) => void;
+  handleOrderSubmit: () => void;
 }
 
-const OrderCart = ({cart, handleUpdateQuantity, handleDeleteCartItem}: OrderCartProps) => {
+const OrderCart = ({cart, handleUpdateQuantity, handleDeleteCartItem, handleOrderSubmit}: OrderCartProps) => {
 
 
   return (
@@ -78,7 +79,7 @@ const OrderCart = ({cart, handleUpdateQuantity, handleDeleteCartItem}: OrderCart
             ${cart.reduce((total, item) => total + (item.price * item.quantity), 0)}
           </span>
         </div>
-        <button className="w-full py-2 bg-green-500 rounded-lg font-bold text-xs text-white shadow">
+        <button onClick={handleOrderSubmit} className="w-full py-2 bg-green-500 rounded-lg font-bold text-xs text-white shadow">
           Submit Order
         </button>
       </div>
