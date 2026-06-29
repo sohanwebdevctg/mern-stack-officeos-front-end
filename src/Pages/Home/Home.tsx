@@ -143,9 +143,36 @@ const Home = () => {
 
   }
 
-  }
+  };
 
-  
+  // delete order product
+  const handleDeleteCartItem = (id: string) => {
+  Swal.fire({
+    title: "Are you sure?",
+    text: "Do you want to remove this product from the cart?",
+    icon: "warning",
+    showCancelButton: true,
+    confirmButtonColor: "#22c55e",
+    cancelButtonColor: "#ef4444", 
+    confirmButtonText: "Yes, delete it!"
+  }).then((result) => {
+    if (result.isConfirmed) {
+      // check the product id
+      const updatedCart = cart.filter((item) => item._id !== id);
+
+      setCart(updatedCart);
+      saveCart(updatedCart);
+
+      Swal.fire({
+        title: "Deleted!",
+        text: "Product has been removed from your cart.",
+        icon: "success",
+        timer: 1500,
+        showConfirmButton: false
+      });
+    }
+  });
+};
 
   return (
      <div>
@@ -176,7 +203,7 @@ const Home = () => {
       const modifiedItem = { ...item, limit: displayLimit };
 
       // now the component is returned
-      return (<ProductCards key={item._id || index} item={modifiedItem} handleAddToCart={handleAddToCart} />);
+      return (<ProductCards key={item._id || index} item={modifiedItem} handleAddToCart={handleAddToCart}  />);
     })
   )}
 </div>
@@ -184,7 +211,7 @@ const Home = () => {
 
         <div className="md:w-[40%] lg:w-[35%]">
           <div className={`${toggle ? 'fixed top-14 left-0 sm:left-24 right-0 bottom-0': 'fixed top-14 left-[1000px] right-0 bottom-0'} md:sticky  h-full md:h-[430px] lg:h-[450px] xl:h-[520px] 2xl:h-[600px] w-full   py-5 md:py-0 px-5 bg-white z-30 transform duration-500 easy-in`}>
-            <OrderCart cart={cart} handleUpdateQuantity={handleUpdateQuantity}></OrderCart>
+            <OrderCart cart={cart} handleUpdateQuantity={handleUpdateQuantity} handleDeleteCartItem={handleDeleteCartItem}></OrderCart>
           </div>
           <span className="fixed top-[50%] -right-2 z-40 md:hidden">
             {

@@ -2,11 +2,11 @@
 interface OrderCartProps{
   cart: any[];
   handleUpdateQuantity: (id:string, action: "increase" | "decrease") => void;
+  handleDeleteCartItem: (id: string) => void;
 }
 
-const OrderCart = ({cart, handleUpdateQuantity}: OrderCartProps) => {
+const OrderCart = ({cart, handleUpdateQuantity, handleDeleteCartItem}: OrderCartProps) => {
 
-  console.log(cart);
 
   return (
     <div className="flex flex-col h-full justify-between w-full sm:w-[86%] md:w-full lg:w-full">
@@ -52,7 +52,7 @@ const OrderCart = ({cart, handleUpdateQuantity}: OrderCartProps) => {
                     ${(item.price * item.quantity)}
                   </td>
                   <td className="py-2 px-2 text-center">
-                    <button className="text-[10px] btn btn-xs bg-red-500 border-none text-white rounded px-2 py-0.5">Delete</button>
+                    <button onClick={() => handleDeleteCartItem(item._id)} className="text-[10px] btn btn-xs bg-red-500 border-none text-white rounded px-2 py-0.5">Delete</button>
                   </td>
                 </tr>
               ))}
