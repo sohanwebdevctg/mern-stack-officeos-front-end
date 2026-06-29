@@ -5,7 +5,7 @@ import { BiSolidLeftArrow, BiSolidRightArrow } from "react-icons/bi";
 import { AuthContext } from "../../Components/AuthProvider/AuthProvider";
 import axios from "axios";
 import { useQuery } from "@tanstack/react-query";
-import { getCart, saveCart } from "../../utilities/localstorage";
+import { clearCart, getCart, saveCart } from "../../utilities/localstorage";
 import Swal from "sweetalert2";
 
 interface UserData{
@@ -175,11 +175,63 @@ const Home = () => {
 };
 
   // submit the order
-  const handleOrderSubmit = () => {
-    console.log(cart);
+  const handleOrderSubmit = async () => {
+    // checking the cart data length
+      if (cart.length === 0) {
+      Swal.fire({
+        icon: "info",
+        title: "Cart is Empty",
+        text: "Please add some products to your cart before submitting.",
+      });
+      return;
+    }
 
-    // clearCart();
-  // setCart([]);
+    // create order data
+    const orderData = {
+      products: cart.map((item) => ({
+        product: item._id,
+        quantity: item.quantity,
+        price: item.price,
+      })),
+      totalBill: cart.reduce((total, item) => total + item.price * item.quantity, 0),
+    };
+
+    try {
+    // create order api
+    const response = await axios.post("https://backend-eosin-one.vercel.app/orders",
+      orderData,
+      {
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
+        },
+      }
+    );
+
+    // if success message show the clear session and state
+    if (response.data.success || response.data.acknowledged) {
+      
+      clearCart();
+      setCart([]);
+
+      Swal.fire({
+        icon: "success",
+        title: "Order Placed Successfully!",
+        text: "Your order has been recorded and showcase stock is updated.",
+        timer: 2500,
+        showConfirmButton: false,
+      });
+
+      // navigate("/orders");
+    }
+  } catch (error: any) {
+    console.error("Order submit error:", error);
+    Swal.fire({
+      icon: "error",
+      title: "Order Failed",
+      text: error.response?.data?.message || "Something went wrong while placing your order.",
+    });
+  }
   }
 
   return (
