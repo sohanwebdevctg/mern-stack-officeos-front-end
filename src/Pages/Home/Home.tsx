@@ -117,8 +117,8 @@ const Home = () => {
 {/* cart-item end */}
 
         <div className="md:w-[40%] lg:w-[35%]">
-          <div className={`${toggle ? 'fixed top-14 left-0 sm:left-24 right-0 bottom-0': 'fixed top-14 left-[1000px] right-0 bottom-0'} md:sticky  h-full md:h-[430px] lg:h-[450px] xl:h-[520px] 2xl:h-[600px] w-full  py-5 md:py-0 px-5 bg-white z-30 transform duration-500 easy-in`}>
-            <OrderCart></OrderCart>
+          <div className={`${toggle ? 'fixed top-14 left-0 sm:left-24 right-0 bottom-0': 'fixed top-14 left-[1000px] right-0 bottom-0'} md:sticky  h-full md:h-[430px] lg:h-[450px] xl:h-[520px] 2xl:h-[600px] w-full   py-5 md:py-0 px-5 bg-white z-30 transform duration-500 easy-in`}>
+            <OrderCart cart={cart}></OrderCart>
           </div>
           <span className="fixed top-[50%] -right-2 z-40 md:hidden">
             {
