@@ -1,9 +1,10 @@
 
 interface OrderCartProps{
   cart: any[];
+  handleUpdateQuantity: (id:string, action: "increase" | "decrease") => void;
 }
 
-const OrderCart = ({cart}: OrderCartProps) => {
+const OrderCart = ({cart, handleUpdateQuantity}: OrderCartProps) => {
 
   console.log(cart);
 
@@ -41,9 +42,9 @@ const OrderCart = ({cart}: OrderCartProps) => {
                   <td className="py-2 px-2">
                     {/* button and quantity */}
                     <div className="flex items-center justify-center gap-1">
-                      <button className="px-1.5 py-0.5 bg-red-500 text-gray-700 rounded text-xs font-bold">-</button>
+                      <button onClick={() => handleUpdateQuantity(item._id, "decrease")} className="px-1.5 py-0.5 bg-red-500 text-gray-700 rounded text-xs font-bold">-</button>
                       <span className="text-xs font-bold px-2 text-center text-gray-800">{item.quantity}</span>
-                      <button className="px-1.5 py-0.5 bg-green-500 text-gray-700 rounded text-xs font-bold">+</button>
+                      <button onClick={() => handleUpdateQuantity(item._id, "increase")} className="px-1.5 py-0.5 bg-green-500 text-gray-700 rounded text-xs font-bold">+</button>
                     </div>
                   </td>
                   {/* quantity and price */}

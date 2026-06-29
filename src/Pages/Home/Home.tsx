@@ -6,6 +6,7 @@ import { AuthContext } from "../../Components/AuthProvider/AuthProvider";
 import axios from "axios";
 import { useQuery } from "@tanstack/react-query";
 import { getCart, saveCart } from "../../utilities/localstorage";
+import Swal from "sweetalert2";
 
 interface UserData{
     _id: string;
@@ -56,7 +57,14 @@ const Home = () => {
   const isAlreadyExists = cart.some((item) => item._id === id);
 
   if (isAlreadyExists) {
-    alert('This product already exists in the cart!');
+    Swal.fire({
+      position: "center",
+      icon: "info",
+      title: "Already in Cart!",
+      text: "This product is already added to your cart. You can increase the quantity from the cart table.",
+      showConfirmButton: true,
+      confirmButtonColor: "#22c55e",
+    });
     return;
   }
 
@@ -80,6 +88,64 @@ const Home = () => {
     saveCart(updatedCart);
   }
 };
+
+  // handle update quantity
+  const handleUpdateQuantity = (id: string, action: "increase" | "decrease") => {
+
+    const originalProduct = approvedProducts.find((p) => p._id === id);
+    const maxLimit = originalProduct ? originalProduct.limit : 0;
+
+    // increment
+    if (action === "increase") {
+    const updatedCart = cart.map((item) => {
+      if (item._id === id) {
+        // if limit is getter than quantity send error
+        if (item.quantity >= maxLimit - 1) {
+          Swal.fire({
+            position: "center",
+            icon: "warning",
+            title: "Stock Limit Reached!",
+            text: `Sorry, you cannot add more than ${maxLimit} items for this product.`,
+            showConfirmButton: true,
+            confirmButtonColor: "#22c55e",
+          });
+          return item;
+        }
+        return { ...item, quantity: item.quantity + 1 };
+      }
+      return item;
+    });
+
+    // save the data
+    setCart(updatedCart);
+    saveCart(updatedCart);
+  }else if(action === "decrease"){
+    // if limit is less than quantity send error
+    const updatedCart = cart.map((item) => {
+      if (item._id === id) {
+        if (item.quantity <= 1) {
+          Swal.fire({
+            position: "center",
+            icon: "info",
+            title: "Minimum Limit!",
+            text: "Quantity cannot be less than 1. If you want to remove this product, click the Delete button.",
+            showConfirmButton: true,
+            confirmButtonColor: "#22c55e",
+          });
+          return item;
+        }
+        return { ...item, quantity: item.quantity - 1 };
+      }
+      return item;
+    });
+    setCart(updatedCart);
+    saveCart(updatedCart);
+
+  }
+
+  }
+
+  
 
   return (
      <div>
@@ -118,7 +184,7 @@ const Home = () => {
 
         <div className="md:w-[40%] lg:w-[35%]">
           <div className={`${toggle ? 'fixed top-14 left-0 sm:left-24 right-0 bottom-0': 'fixed top-14 left-[1000px] right-0 bottom-0'} md:sticky  h-full md:h-[430px] lg:h-[450px] xl:h-[520px] 2xl:h-[600px] w-full   py-5 md:py-0 px-5 bg-white z-30 transform duration-500 easy-in`}>
-            <OrderCart cart={cart}></OrderCart>
+            <OrderCart cart={cart} handleUpdateQuantity={handleUpdateQuantity}></OrderCart>
           </div>
           <span className="fixed top-[50%] -right-2 z-40 md:hidden">
             {
