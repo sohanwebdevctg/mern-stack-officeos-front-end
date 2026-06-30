@@ -188,17 +188,17 @@ const Home = () => {
 
     // create order data
     const orderData = {
-      products: cart.map((item) => ({
-        product: item._id,
-        quantity: item.quantity,
-        price: item.price,
-      })),
-      totalBill: cart.reduce((total, item) => total + item.price * item.quantity, 0),
-    };
+  orderItems: cart.map((item) => ({ 
+    product: item._id,
+    quantity: item.quantity,
+    price: item.price,
+  })),
+  totalBill: cart.reduce((total, item) => total + item.price * item.quantity, 0),
+};
 
     try {
     // create order api
-    const response = await axios.post("https://backend-eosin-one.vercel.app/orders",
+    const response = await axios.post(`${baseURL}/order/createOrder`,
       orderData,
       {
         headers: {
