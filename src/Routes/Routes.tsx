@@ -21,6 +21,7 @@ import CreateProduct from "../Pages/CreateProduct/CreateProduct";
 import AllProductAdmin from "../Pages/AllProductAdmin/AllProductAdmin";
 import SingleProduct from "../Pages/SingleProduct/SingleProduct";
 import UpdateSingleProduct from "../Pages/UpdateSingleProduct/UpdateSingleProduct";
+import UserOrderTable from "../Pages/UserOrderTable/UserOrderTable";
 
 
 
@@ -90,6 +91,10 @@ const router = createBrowserRouter([
     {
       path: '/updateSingleProduct/:id',
       element: <AdminRoute><UpdateSingleProduct></UpdateSingleProduct></AdminRoute>
+    },
+    {
+      path: '/userOrderTable',
+      element: <UserOrderTable></UserOrderTable>
     },
     ]
   },

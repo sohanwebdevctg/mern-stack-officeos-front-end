@@ -7,6 +7,7 @@ import axios from "axios";
 import { useQuery } from "@tanstack/react-query";
 import { clearCart, getCart, saveCart } from "../../utilities/localstorage";
 import Swal from "sweetalert2";
+import { Navigate, useNavigate } from "react-router";
 
 interface UserData{
     _id: string;
@@ -29,6 +30,8 @@ interface ProductType {
 const Home = () => {
 
   const authInfo = useContext(AuthContext);
+  // navigation the user
+  const navigate = useNavigate();
   const [toggle, setToggle] = useState(false);
   const [cart, setCart] = useState<any[]>(() => getCart());
 
@@ -222,7 +225,7 @@ const Home = () => {
         showConfirmButton: false,
       });
 
-      // navigate("/orders");
+      navigate("/userOrderTable");
     }
   } catch (error: any) {
     console.error("Order submit error:", error);

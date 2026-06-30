@@ -4,6 +4,7 @@ import { IoClose } from "react-icons/io5";
 import { Link, NavLink, useNavigate } from "react-router";
 import Swal from "sweetalert2";
 import { AuthContext } from "../AuthProvider/AuthProvider";
+import { FaBell } from "react-icons/fa";
 
 
 const Header = () => {
@@ -98,6 +99,9 @@ const Header = () => {
           {/* title section end */}
           {/* toggle button and profile link start */}
           <div className="flex justify-center items-center gap-4">
+            <Link to="/userOrderTable">
+              <FaBell className="text-white text-xl md:2xl cursor-pointer"/>
+            </Link>
             <div className="sm:hidden flex items-center">
               {toggle ? (
                 <IoClose onClick={() => setToggle(!toggle)} className="text-white text-2xl cursor-pointer" />
