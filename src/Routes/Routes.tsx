@@ -22,6 +22,7 @@ import AllProductAdmin from "../Pages/AllProductAdmin/AllProductAdmin";
 import SingleProduct from "../Pages/SingleProduct/SingleProduct";
 import UpdateSingleProduct from "../Pages/UpdateSingleProduct/UpdateSingleProduct";
 import UserOrderTable from "../Pages/UserOrderTable/UserOrderTable";
+import AllOrderManager from "../Pages/AllOrderManager/AllOrderManager";
 
 
 
@@ -95,6 +96,10 @@ const router = createBrowserRouter([
     {
       path: '/userOrderTable',
       element: <UserOrderTable></UserOrderTable>
+    },
+        {
+      path: '/allOrderManager',
+      element: <ManagerRoute><AllOrderManager></AllOrderManager></ManagerRoute>
     },
     ]
   },
