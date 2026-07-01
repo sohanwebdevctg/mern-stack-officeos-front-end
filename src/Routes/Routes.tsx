@@ -24,6 +24,8 @@ import UpdateSingleProduct from "../Pages/UpdateSingleProduct/UpdateSingleProduc
 import UserOrderTable from "../Pages/UserOrderTable/UserOrderTable";
 import AllOrderManager from "../Pages/AllOrderManager/AllOrderManager";
 import AllOrderAdmin from "../Pages/AllOrderAdmin/AllOrderAdmin";
+import AllPaymentAdmin from "../Pages/AllPaymentAdmin/AllPaymentAdmin";
+import AllPaymentManager from "../Pages/AllPaymentManager/AllPaymentManager";
 
 
 
@@ -105,6 +107,14 @@ const router = createBrowserRouter([
     {
       path: '/allOrderAdmin',
       element: <AdminRoute><AllOrderAdmin></AllOrderAdmin></AdminRoute>
+    },
+    {
+      path: '/allPaymentAdmin',
+      element: <AdminRoute><AllPaymentAdmin></AllPaymentAdmin></AdminRoute>
+    },
+    {
+      path: '/allPaymentManager',
+      element: <ManagerRoute><AllPaymentManager></AllPaymentManager></ManagerRoute>
     },
     ]
   },

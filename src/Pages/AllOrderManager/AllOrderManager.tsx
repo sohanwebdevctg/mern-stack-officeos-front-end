@@ -4,6 +4,7 @@ import axios from 'axios';
 import { AuthContext } from '../../Components/AuthProvider/AuthProvider';
 import LoadingCom from '../../Components/LoadingCom/LoadingCom';
 import ErrorCom from '../../Components/ErrorCom/ErrorCom';
+import { Link } from 'react-router';
 
 interface IProduct {
   _id: string;
@@ -83,10 +84,13 @@ const AllOrderManager = () => {
       
       {/* header */}
       <div className="flex justify-between items-center mb-6 pb-4 border-b border-red-500">
-        <h2 className="text-xl font-bold text-red-500">All Order Manager Portal ({orders.length})</h2>
-        <button className="px-4 py-2 bg-green-500 hover:bg-green-600 text-white font-bold text-xs rounded transition-colors shadow-sm">
-          Payment List
-        </button>
+        <h2 className="text-[11px] sm:text-lg font-bold text-red-500">All Order Manager Portal ({orders.length})</h2>
+        <Link to="/allPaymentManager">
+          <button className="px-2 py-2 bg-green-500 hover:bg-green-600 text-white font-bold text-[10px] sm:text-md lg:text-[13px] rounded transition-colors shadow-sm">
+            Payment List
+          </button>
+        </Link>
+        
       </div>
 
       {/* order table body */}

@@ -5,6 +5,7 @@ import { AuthContext } from '../../Components/AuthProvider/AuthProvider';
 import LoadingCom from '../../Components/LoadingCom/LoadingCom';
 import ErrorCom from '../../Components/ErrorCom/ErrorCom';
 import Swal from 'sweetalert2';
+import { Link } from 'react-router';
 
 interface IProduct {
   _id: string;
@@ -38,6 +39,9 @@ interface IOrder {
 const AllOrderAdmin = () => {
   const [selectedItems, setSelectedItems] = useState<IOrderItem[]>([]);
   const [activeOrderId, setActiveOrderId] = useState<string>('');
+  const [accountNumber, setAccountNumber] = useState<string>('');
+  const [accountPassword, setAccountPassword] = useState<string>('');
+  const [paymentError, setPaymentError] = useState<string>('');
 
   // get auth context data
   const authInfo = useContext(AuthContext);
@@ -197,6 +201,62 @@ const AllOrderAdmin = () => {
     });
   };
 
+  // call api create payment
+  const createPaymentMutation = useMutation({
+  mutationFn: async ({ orderId, paymentNumber }: { orderId: string; paymentNumber: string }) => {
+    const response = await axios.post(
+      `${baseURL}/payment/createPayment`,
+      { orderId, paymentNumber },
+      {
+        headers: { Authorization: `Bearer ${token}` },
+      }
+    );
+    return response.data;
+  },
+  onSuccess: () => {
+    queryClient.invalidateQueries({ queryKey: ['adminOrders'] });
+    queryClient.invalidateQueries({ queryKey: ['products'] });
+
+    const payModal = document.getElementById('pay_modal_admin') as HTMLDialogElement;
+    if (payModal) payModal.close();
+
+    Swal.fire({
+      icon: 'success',
+      title: 'Payment Successful!',
+      text: 'Order settled and stock adjusted.',
+      timer: 2000,
+      showConfirmButton: false,
+    });
+  },
+  onError: (error: any) => {
+    setPaymentError(error.response?.data?.message || 'Something went wrong during payment!');
+  },
+});
+
+  // payment function
+const handlePaymentSubmit = (e: React.FormEvent) => {
+  e.preventDefault();
+  
+  // account number validation
+  if (!accountNumber || accountNumber.length !== 12) {
+    setPaymentError('Account number must be exactly 12 digits!');
+    return;
+  }
+
+  // password validation
+  if (!accountPassword || accountPassword.length !== 4) {
+    setPaymentError('Password must be exactly 4 digits!');
+    return;
+  }
+
+  setPaymentError('');
+  
+  createPaymentMutation.mutate({
+    orderId: activeOrderId,
+    paymentNumber: accountNumber,
+  });
+};
+
   // loading component
   if (isLoading) {
     return <LoadingCom></LoadingCom>;
@@ -212,10 +272,13 @@ const AllOrderAdmin = () => {
       
       {/* order table header */}
       <div className="flex justify-between items-center mb-6 pb-4 border-b border-red-500">
-        <h2 className="text-xl font-bold text-red-500">All Order Admin Portal ({orders.length})</h2>
-        <button className="px-4 py-2 bg-green-500 hover:bg-green-600 text-white font-bold text-xs rounded transition-colors shadow-sm">
+        <h2 className="text-[11px] sm:text-lg font-bold text-red-500">All Order Admin Portal ({orders.length})</h2>
+        <Link to="/allPaymentAdmin">
+          <button className="px-2 py-1 bg-green-500 hover:bg-green-600 text-white font-bold text-[10px] sm:text-md lg:text-[13px] rounded transition-colors shadow-sm">
           Payment List
         </button>
+        </Link>
+        
       </div>
 
       {/* order table body */}
@@ -253,22 +316,26 @@ const AllOrderAdmin = () => {
                   
                   {/* status button */}
                   <td className="p-4">
-                    {order.status === 'Pending' ? (
-                      <button 
-                        onClick={() => handleApproveClick(order._id)}
-                        disabled={approveOrderMutation.isPending}
-                        className="px-3 py-1 bg-amber-500 hover:bg-amber-600 text-white font-bold text-xs rounded transition-colors shadow-sm disabled:bg-amber-300"
-                      >
-                        {approveOrderMutation.isPending ? "..." : "Approve Please"}
-                      </button>
-                    ) : (
-                      <span className={`px-3 py-1 rounded-full text-xs font-bold border ${
-                        order.status === 'Approved' ? 'bg-green-50 text-green-600 border-green-200' : 'bg-red-50 text-red-600 border-red-200'
-                      }`}>
-                        {order.status}
-                      </span>
-                    )}
-                  </td>
+                        {order.orderItems?.length === 0 ? (
+                          <span className="px-3 py-1 rounded-full text-xs font-bold border bg-red-50 text-red-600 border-red-200 animate-pulse">
+                            Please Delete Order
+                          </span>
+                        ) : order.status === 'Pending' ? (
+                          <button 
+                            onClick={() => handleApproveClick(order._id)}
+                            disabled={approveOrderMutation.isPending}
+                            className="px-3 py-1 bg-amber-500 hover:bg-amber-600 text-white font-bold text-xs rounded transition-colors shadow-sm disabled:bg-amber-300"
+                          >
+                            {approveOrderMutation.isPending ? "..." : "Approve Please"}
+                          </button>
+                        ) : (
+                          <span className={`px-3 py-1 rounded-full text-xs font-bold border ${
+                            order.status === 'Approved' ? 'bg-green-50 text-green-600 border-green-200' : 'bg-red-50 text-red-600 border-red-200'
+                          }`}>
+                            {order.status}
+                          </span>
+                        )}
+                      </td>
                   
                   <td className="p-4 text-gray-500">{new Date(order.createdAt).toLocaleDateString()}</td>
                   
@@ -289,6 +356,13 @@ const AllOrderAdmin = () => {
                     >
                       {deleteOrderMutation.isPending ? "..." : "Delete"}
                     </button>
+                    {/* payment button */}
+                    {order.status === 'Approved' && order.orderItems?.length > 0 && (<button onClick={() => {setActiveOrderId(order._id);setAccountNumber('');setAccountPassword('');setPaymentError('');
+                  const payModal = document.getElementById('pay_modal_admin') as HTMLDialogElement;
+                if (payModal) payModal.showModal();
+              }}
+              className="px-3 py-1 bg-blue-600 text-white font-bold text-xs rounded hover:bg-blue-700 transition-colors"
+            >Pay</button>)}
                   </td>
                 </tr>
               ))}
@@ -297,7 +371,7 @@ const AllOrderAdmin = () => {
         </table>
       </div>
 
-      {/* Product List Modal */}
+      {/* product list modal */}
       <dialog id="my_modal_admin" className="modal">
         <div className="modal-box w-11/12 max-w-2xl bg-white">
           <form method="dialog">
@@ -335,25 +409,21 @@ const AllOrderAdmin = () => {
                       <td className="p-2">
                         <div className="flex items-center justify-center gap-2">
                           {/* decrement button */}
-                          <button 
-                            onClick={() => {
-                              const pId = item.product?._id || item.product;
-                              updateQuantityMutation.mutate({ orderId: activeOrderId, productId: pId, action: 'decrement' });
-                            }}
-                            disabled={item.quantity <= 1 || updateQuantityMutation.isPending}
-                            className="w-5 h-5 bg-red-500 hover:bg-red-600 rounded flex items-center justify-center font-bold text-gray-700 disabled:opacity-50"
-                          >
-                            -
-                          </button>
+                          <button onClick={() => {
+                            const pId = item.product?._id || item.product;
+                            updateQuantityMutation.mutate({ orderId: activeOrderId, productId: pId, action: 'decrement' });
+                          }}
+                          className="w-5 h-5 bg-red-500 rounded flex items-center justify-center font-bold text-white text-sm"
+                        >
+                          -
+                        </button>
                           <span className="w-6 text-center font-semibold text-sm">{item.quantity}</span>
                           {/* increment button */}
-                          <button 
-                            onClick={() => { 
-                              const pId = item.product?._id || item.product; 
+                          <button onClick={() => {
+                              const pId = item.product?._id || item.product;
                               updateQuantityMutation.mutate({ orderId: activeOrderId, productId: pId, action: 'increment' });
                             }}
-                            disabled={updateQuantityMutation.isPending}
-                            className="w-5 h-5 bg-green-500 hover:bg-green-600 rounded flex items-center justify-center font-bold text-gray-700"
+                            className="w-5 h-5 bg-green-500 rounded flex items-center justify-center font-bold text-white text-sm"
                           >
                             +
                           </button>
@@ -384,6 +454,59 @@ const AllOrderAdmin = () => {
               </tbody>
             </table>
           </div>
+        </div>
+      </dialog>
+
+      {/* payment confirmation modal */}
+      <dialog id="pay_modal_admin" className="modal">
+        <div className="modal-box max-w-md bg-white p-6 rounded-lg shadow-xl relative">
+          {/* close button */}
+          <form method="dialog">
+            <button className="btn btn-sm btn-circle btn-ghost absolute right-2 top-2 text-gray-500">✕</button>
+          </form>
+          
+          <h3 className="font-bold text-lg text-green-600 mb-4 text-center border-b pb-2 uppercase tracking-wider">
+            Order Payment Settlement
+          </h3>
+          
+          <form onSubmit={handlePaymentSubmit} className="space-y-4">
+            {/* input account number */}
+            <div>
+            <label className="block text-xs font-bold text-gray-600 mb-1 uppercase">Bank Account Number</label>
+            <input 
+              type="text" 
+              value={accountNumber}
+              onChange={(e) => {
+                const onlyNums = e.target.value.replace(/[^0-9]/g, '');
+                setAccountNumber(onlyNums);
+              }}
+              placeholder="Enter account number (Numbers only)"
+              className="w-full px-3 py-2 border rounded text-sm bg-gray-50 focus:outline-none focus:border-green-500 font-semibold"
+            />
+          </div>
+
+            {/* enter pin number */}
+            <div>
+              <label className="block text-xs font-bold text-gray-600 mb-1 uppercase">Account Password / PIN</label>
+              <input 
+                type="password" 
+                value={accountPassword}
+                onChange={(e) => setAccountPassword(e.target.value)}
+                placeholder="••••"
+                className="w-full px-3 py-2 border rounded text-sm bg-gray-50 focus:outline-none focus:border-green-500 font-bold tracking-widest"
+              />
+            </div>
+
+            {/* show error message */}
+            {paymentError && (
+              <p className="text-xs text-red-500 font-bold text-center bg-red-50 py-1 rounded border border-red-100">
+                {paymentError}
+              </p>
+            )}
+
+            {/* submit button */}
+            <button  type="submit" disabled={createPaymentMutation.isPending} className="w-full py-2.5 bg-green-600 text-white font-bold rounded">{createPaymentMutation.isPending ? "Processing..." : "Submit Pay"}</button>
+          </form>
         </div>
       </dialog>
 
