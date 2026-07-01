@@ -69,6 +69,7 @@ const AllOrderAdmin = () => {
     if (modal) modal.showModal();
   };
 
+
   // approved api call
   const queryClient = useQueryClient();
   const approveOrderMutation = useMutation({
@@ -115,6 +116,7 @@ const AllOrderAdmin = () => {
     },
     onSuccess: (data) => {
       queryClient.invalidateQueries({ queryKey: ['adminOrders'] });
+      queryClient.invalidateQueries({ queryKey: ['products'] }); 
       const updatedOrder = data.data;
       setSelectedItems(updatedOrder.orderItems);
     },
@@ -122,77 +124,78 @@ const AllOrderAdmin = () => {
 
   //  product remove from order
   const removeProductMutation = useMutation({
-  mutationFn: async ({ orderId, productId }: { orderId: string, productId: string }) => {
-    const response = await axios.delete(`${baseURL}/order/${orderId}/removeProduct/${productId}`, {
-      headers: { Authorization: `Bearer ${token}` },
-    });
-    return response.data;
-  },
-  onSuccess: (data) => {
-    queryClient.invalidateQueries({ queryKey: ['adminOrders'] });
-    
-    if (data.orderDeleted) {
-      const modal = document.getElementById('my_modal_admin') as HTMLDialogElement;
-      if (modal) modal.close();
+    mutationFn: async ({ orderId, productId }: { orderId: string, productId: string }) => {
+      const response = await axios.delete(`${baseURL}/order/${orderId}/removeProduct/${productId}`, {
+        headers: { Authorization: `Bearer ${token}` },
+      });
+      return response.data;
+    },
+    onSuccess: (data) => {
+      queryClient.invalidateQueries({ queryKey: ['adminOrders'] });
+      queryClient.invalidateQueries({ queryKey: ['products'] }); 
+      const updatedOrder = data.data;
+      setSelectedItems(updatedOrder?.orderItems || []);
       
       Swal.fire({ 
         icon: 'success', 
-        title: 'Order Deleted!', 
-        text: 'Since no products were left, the order has been removed.', 
-        timer: 2000, 
+        title: 'Removed!', 
+        text: 'Product removed and limit restored.', 
+        timer: 1000, 
         showConfirmButton: false 
       });
-    } else {
-      const updatedOrder = data.data;
-      setSelectedItems(updatedOrder.orderItems);
-      Swal.fire({ icon: 'success', title: 'Removed!', text: 'Product removed.', timer: 1000, showConfirmButton: false });
+    },
+    onError: (error: any) => {
+      Swal.fire({
+        icon: 'error',
+        title: 'Error',
+        text: error.response?.data?.message || 'Failed to remove product',
+      });
     }
-  },
-});
+  });
 
-// delete order
-const deleteOrderMutation = useMutation({
-  mutationFn: async (orderId: string) => {
-    const response = await axios.delete(`${baseURL}/order/deleteOrderAdmin/${orderId}`, {
-      headers: { Authorization: `Bearer ${token}` },
-    });
-    return response.data;
-  },
-  onSuccess: () => {
-    queryClient.invalidateQueries({ queryKey: ['adminOrders'] });
-    Swal.fire({
-      icon: 'success',
-      title: 'Deleted!',
-      text: 'Order has been completely removed.',
-      timer: 1500,
-      showConfirmButton: false,
-    });
-  },
-  onError: (error: any) => {
-    Swal.fire({
-      icon: 'error',
-      title: 'Failed',
-      text: error.response?.data?.message || 'Failed to delete order',
-    });
-  }
-});
+  // delete order
+  const deleteOrderMutation = useMutation({
+    mutationFn: async (orderId: string) => {
+      const response = await axios.delete(`${baseURL}/order/deleteOrderAdmin/${orderId}`, {
+        headers: { Authorization: `Bearer ${token}` },
+      });
+      return response.data;
+    },
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ['adminOrders'] });
+      Swal.fire({
+        icon: 'success',
+        title: 'Deleted!',
+        text: 'Order has been completely removed.',
+        timer: 1500,
+        showConfirmButton: false,
+      });
+    },
+    onError: (error: any) => {
+      Swal.fire({
+        icon: 'error',
+        title: 'Failed',
+        text: error.response?.data?.message || 'Failed to delete order',
+      });
+    }
+  });
 
   // delete handle button
   const handleDeleteOrderClick = (orderId: string) => {
-  Swal.fire({
-    title: 'Are you sure?',
-    text: "You won't be able to revert this order!",
-    icon: 'warning',
-    showCancelButton: true,
-    confirmButtonColor: '#ef4444',
-    cancelButtonColor: '#6b7280',
-    confirmButtonText: 'Yes, delete it!'
-  }).then((result) => {
-    if (result.isConfirmed) {
-      deleteOrderMutation.mutate(orderId);
-    }
-  });
-};
+    Swal.fire({
+      title: 'Are you sure?',
+      text: "You won't be able to revert this order!",
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonColor: '#ef4444',
+      cancelButtonColor: '#6b7280',
+      confirmButtonText: 'Yes, delete it!'
+    }).then((result) => {
+      if (result.isConfirmed) {
+        deleteOrderMutation.mutate(orderId);
+      }
+    });
+  };
 
   // loading component
   if (isLoading) {
@@ -315,48 +318,69 @@ const deleteOrderMutation = useMutation({
                 </tr>
               </thead>
               <tbody className="text-gray-700 font-medium">
-                {selectedItems.map((item: any, idx: number) => (
-                  <tr key={idx} className="hover:bg-gray-50 border-b border-gray-100">
-                    <td className="p-2 text-center">
-                      <img src={item.product?.image || 'default-product.png'} alt="" className="w-8 h-8 object-cover rounded mx-auto" />
-                    </td>
-                    <td className="p-2">{item.product?.name || 'Unknown Product'}</td>
-                    
-                    {/* quantity increment and decrement button */}
-                    <td className="p-2">
-                      <div className="flex items-center justify-center gap-2">
-                        <button 
-                        onClick={() => {
-                          const pId = item.product?._id || item.product;
-                          updateQuantityMutation.mutate({ orderId: activeOrderId, productId: pId, action: 'decrement' });
-                        }}
-                        disabled={item.quantity <= 1 || updateQuantityMutation.isPending}
-                        className="w-5 h-5 bg-red-500 rounded flex items-center justify-center font-bold text-gray-700 disabled:opacity-50"
-                      >
-                        -
-                      </button>
-                        <span className="w-6 text-center font-semibold text-sm">{item.quantity}</span>
-                        <button onClick={() => { const pId = item.product?._id || item.product; 
-                        updateQuantityMutation.mutate({ orderId: activeOrderId, productId: pId, action: 'increment' });}}
-                        disabled={updateQuantityMutation.isPending}
-                        className="w-5 h-5 bg-green-500 rounded flex items-center justify-center font-bold text-gray-700">+</button>
-                      </div>
-                    </td>
-                    
-                    <td className="p-2 text-right">${item.price}</td>
-                    <td className="p-2 text-right font-bold text-green-600">
-                      ${item.price * item.quantity}
-                    </td>
-                    <td className="p-2 text-center"><button onClick={() => {
-    const pId = item.product?._id || item.product;
-    removeProductMutation.mutate({ orderId: activeOrderId, productId: pId });
-  }}
-  disabled={removeProductMutation.isPending}
-  className="px-2 py-1 bg-red-100 text-red-600 rounded transition-colors text-xs font-bold"
->Remove</button>
+                {selectedItems.length === 0 ? (
+                  <tr>
+                    <td colSpan={6} className="text-center py-8 text-gray-500 font-bold text-sm uppercase">
+                      No product available
                     </td>
                   </tr>
-                ))}
+                ) : (
+                  selectedItems.map((item: any, idx: number) => (
+                    <tr key={idx} className="hover:bg-gray-50 border-b border-gray-100">
+                      <td className="p-2 text-center">
+                        <img src={item.product?.image || 'default-product.png'} alt="" className="w-8 h-8 object-cover rounded mx-auto" />
+                      </td>
+                      <td className="p-2">{item.product?.name || 'Unknown Product'}</td>
+                      {/* quantity increment and decrement button */}
+                      <td className="p-2">
+                        <div className="flex items-center justify-center gap-2">
+                          {/* decrement button */}
+                          <button 
+                            onClick={() => {
+                              const pId = item.product?._id || item.product;
+                              updateQuantityMutation.mutate({ orderId: activeOrderId, productId: pId, action: 'decrement' });
+                            }}
+                            disabled={item.quantity <= 1 || updateQuantityMutation.isPending}
+                            className="w-5 h-5 bg-red-500 hover:bg-red-600 rounded flex items-center justify-center font-bold text-gray-700 disabled:opacity-50"
+                          >
+                            -
+                          </button>
+                          <span className="w-6 text-center font-semibold text-sm">{item.quantity}</span>
+                          {/* increment button */}
+                          <button 
+                            onClick={() => { 
+                              const pId = item.product?._id || item.product; 
+                              updateQuantityMutation.mutate({ orderId: activeOrderId, productId: pId, action: 'increment' });
+                            }}
+                            disabled={updateQuantityMutation.isPending}
+                            className="w-5 h-5 bg-green-500 hover:bg-green-600 rounded flex items-center justify-center font-bold text-gray-700"
+                          >
+                            +
+                          </button>
+                        </div>
+                      </td>
+                      
+                      <td className="p-2 text-right">${item.price}</td>
+                      <td className="p-2 text-right font-bold text-green-600">
+                        ${item.price * item.quantity}
+                      </td>
+                      
+                      {/* remove button */}
+                      <td className="p-2 text-center">
+                        <button 
+                          onClick={() => {
+                            const pId = item.product?._id || item.product;
+                            removeProductMutation.mutate({ orderId: activeOrderId, productId: pId });
+                          }}
+                          disabled={removeProductMutation.isPending}
+                          className="px-2 py-1 bg-red-100 text-red-600 rounded transition-colors text-xs font-bold"
+                        >
+                          Remove
+                        </button>
+                      </td>
+                    </tr>
+                  ))
+                )}
               </tbody>
             </table>
           </div>
