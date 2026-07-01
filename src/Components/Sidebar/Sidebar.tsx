@@ -1,5 +1,5 @@
 import { useContext } from "react";
-import { FaRegEye, FaUsers } from "react-icons/fa";
+import { FaClipboardList, FaRegEye, FaUsers } from "react-icons/fa";
 import { GiHamburgerMenu } from "react-icons/gi";
 import { IoClose, IoLogOut } from "react-icons/io5";
 import { MdAddShoppingCart, MdDashboard, MdViewInAr } from "react-icons/md";
@@ -62,12 +62,13 @@ const Sidebar = ({ active, toggleSideBar }: NavbarProps) => {
   const adminRouter = <>
     <li>{active ? (<NavLink className={({ isActive }) => isActive ? "sm:text-[8px] md:text-[10px] lg:text-xs xl:text-sm 2xl:text-sm font-bold text-red-500" : "sm:text-[8px] md:text-[10px] lg:text-xs xl:text-sm 2xl:text-sm text-white"} to="/allUserAdmin">AllUserAdmin</NavLink>) : (<NavLink className={({ isActive }) => isActive ? "text-red-500" : "text-white"} to="/allUserAdmin"><FaUsers className="text-xl xl:text-3xl mx-auto" /></NavLink>)}</li>
     <li>{active ? (<NavLink className={({ isActive }) => isActive ? "sm:text-[8px] md:text-[10px] lg:text-xs xl:text-sm 2xl:text-sm font-bold text-red-500" : "sm:text-[8px] md:text-[10px] lg:text-xs xl:text-sm 2xl:text-sm text-white"} to="/allProductAdmin">AllProductAdmin</NavLink>) : (<NavLink className={({ isActive }) => isActive ? "text-red-500" : "text-white"} to="/allProductAdmin"><MdViewInAr className="text-xl xl:text-3xl mx-auto" /></NavLink>)}</li>
+    <li>{active ? (<NavLink className={({ isActive }) => isActive ? "sm:text-[8px] md:text-[10px] lg:text-xs xl:text-sm 2xl:text-sm font-bold text-red-500" : "sm:text-[8px] md:text-[10px] lg:text-xs xl:text-sm 2xl:text-sm text-white"} to="/allOrderAdmin">AllProductAdmin</NavLink>) : (<NavLink className={({ isActive }) => isActive ? "text-red-500" : "text-white"} to="/allOrderAdmin"><FaClipboardList className="text-xl xl:text-3xl mx-auto" /></NavLink>)}</li>
   </>;
 
   // manager router list
   const managerRouter = <>
     <li>{active ? (<NavLink className={({ isActive }) => isActive ? "sm:text-[8px] md:text-[10px] lg:text-xs xl:text-sm 2xl:text-sm font-bold text-red-500" : "sm:text-[8px] md:text-[10px] lg:text-xs xl:text-sm 2xl:text-sm text-white"} to="/allUserManager">AllUserManager</NavLink>) : (<NavLink className={({ isActive }) => isActive ? "text-red-500" : "text-white"} to="/allUserManager"><FaUsers className="text-xl xl:text-3xl mx-auto" /></NavLink>)}</li>
-    <li>{active ? (<NavLink className={({ isActive }) => isActive ? "sm:text-[8px] md:text-[10px] lg:text-xs xl:text-sm 2xl:text-sm font-bold text-red-500" : "sm:text-[8px] md:text-[10px] lg:text-xs xl:text-sm 2xl:text-sm text-white"} to="/allOrderManager">AllOrderManager</NavLink>) : (<NavLink className={({ isActive }) => isActive ? "text-red-500" : "text-white"} to="/allOrderManager"><FaUsers className="text-xl xl:text-3xl mx-auto" /></NavLink>)}</li>
+    <li>{active ? (<NavLink className={({ isActive }) => isActive ? "sm:text-[8px] md:text-[10px] lg:text-xs xl:text-sm 2xl:text-sm font-bold text-red-500" : "sm:text-[8px] md:text-[10px] lg:text-xs xl:text-sm 2xl:text-sm text-white"} to="/allOrderManager">AllOrderManager</NavLink>) : (<NavLink className={({ isActive }) => isActive ? "text-red-500" : "text-white"} to="/allOrderManager"><FaClipboardList className="text-xl xl:text-3xl mx-auto" /></NavLink>)}</li>
   </>;
 
   return (

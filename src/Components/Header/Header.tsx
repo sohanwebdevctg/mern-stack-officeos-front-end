@@ -71,6 +71,8 @@ const Header = () => {
     </li>
     <li onClick={() => setToggle(!toggle)}><NavLink className={({ isActive }) => isActive ? "text-base font-bold text-red-500" : "text-base text-white hover:text-red-400 transition"}to="/allProductAdmin">AllProductAdmin</NavLink>
     </li>
+    <li onClick={() => setToggle(!toggle)}><NavLink className={({ isActive }) => isActive ? "text-base font-bold text-red-500" : "text-base text-white hover:text-red-400 transition"}to="/allOrderAdmin">AllOrderAdmin</NavLink>
+    </li>
     </>;
 
   // manager router list
