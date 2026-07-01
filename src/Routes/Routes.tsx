@@ -26,6 +26,7 @@ import AllOrderManager from "../Pages/AllOrderManager/AllOrderManager";
 import AllOrderAdmin from "../Pages/AllOrderAdmin/AllOrderAdmin";
 import AllPaymentAdmin from "../Pages/AllPaymentAdmin/AllPaymentAdmin";
 import AllPaymentManager from "../Pages/AllPaymentManager/AllPaymentManager";
+import SingleUserPayment from "../Pages/SingleUserPayment/SingleUserPayment";
 
 
 
@@ -115,6 +116,10 @@ const router = createBrowserRouter([
     {
       path: '/allPaymentManager',
       element: <ManagerRoute><AllPaymentManager></AllPaymentManager></ManagerRoute>
+    },
+    {
+      path: '/singleUserPayment',
+      element: <SingleUserPayment></SingleUserPayment>
     },
     ]
   },

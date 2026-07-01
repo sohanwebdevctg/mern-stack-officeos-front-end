@@ -5,6 +5,7 @@ import Swal from 'sweetalert2';
 import { AuthContext } from '../../Components/AuthProvider/AuthProvider';
 import LoadingCom from '../../Components/LoadingCom/LoadingCom';
 import ErrorCom from '../../Components/ErrorCom/ErrorCom';
+import { Link } from 'react-router';
 
 
 interface IProduct {
@@ -137,9 +138,12 @@ const UserOrderTable = () => {
       {/* order table header */}
       <div className="flex justify-between items-center mb-6 pb-4 border-b border-red-500">
         <h2 className="text-xl font-bold text-red-500">Order List ({orders.length})</h2>
+        <Link to="/singleUserPayment">
         <button className="px-4 py-2 bg-green-500 hover:bg-green-600 text-white font-bold text-xs rounded transition-colors shadow-sm">
           Payment List
         </button>
+        </Link>
+        
       </div>
 
       {/* loading and error handle */}
